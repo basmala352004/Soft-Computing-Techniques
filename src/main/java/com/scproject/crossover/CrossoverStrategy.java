@@ -15,7 +15,7 @@ public interface CrossoverStrategy {
      * @param parent2 The second parent chromosome
      * @return Array containing two offspring chromosomes
      */
-    Chromosome[] crossover(Chromosome parent1, Chromosome parent2);
+    Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate);
 
     /**
      * Check if this crossover strategy is applicable to the given chromosome type.
@@ -27,4 +27,5 @@ public interface CrossoverStrategy {
     default boolean isApplicable(Chromosome chromosome) {
         return true;
     }
+    String getName();
 }

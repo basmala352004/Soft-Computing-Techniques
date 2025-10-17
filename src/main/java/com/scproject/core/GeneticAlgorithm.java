@@ -112,7 +112,7 @@ public class GeneticAlgorithm {
 
         for (int i = 0; i < parents.size() - 1; i += 2) {
             if (Math.random() < config.getCrossoverRate()) {
-                Chromosome[] children = crossoverStrategy.crossover(parents.get(i), parents.get(i + 1));
+                Chromosome[] children = crossoverStrategy.crossover(parents.get(i), parents.get(i + 1),config.getCrossoverRate());
                 offspring.add(children[0]);
                 offspring.add(children[1]);
             } else {
