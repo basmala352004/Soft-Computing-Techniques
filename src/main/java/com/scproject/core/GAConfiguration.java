@@ -43,10 +43,11 @@ public class GAConfiguration {
         this.printFrequency = 10;
 
         // uncomment when implemented
-        // this.selectionStrategy = new TournamentSelection(3);
+        this.selectionStrategy = new rankSelection();
         // this.crossoverStrategy = new SinglePointCrossover();
         // this.mutationStrategy = null; // Will be set based on chromosome type
-        // this.replacementStrategy = new ElitistReplacement(2);
+        this.replacementStrategy = new ElitistReplacement();
+        this.replacementStrategy.setEliteCount(2);
     }
 
     public void validate() {
