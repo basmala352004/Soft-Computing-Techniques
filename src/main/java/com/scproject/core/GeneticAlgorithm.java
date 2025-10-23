@@ -40,30 +40,20 @@ public class GeneticAlgorithm {
         validateConfiguration();
         initialize();
 
-        System.out.println("NEEWWWW");
-        this.printGeneration();
         for (int generation = 0; generation < config.getGenerations(); generation++) {
             evaluatePopulation();
-            System.out.println("NEEWWWW");
-            this.printGeneration();
 
-            System.out.println("Generation " + generation);
-            System.out.println("Generation tests " + population.getIndividuals());
             List<Chromosome> parents = selectParents();
 
             List<Chromosome> offspring = performCrossover(parents);
-            System.out.println("Generation cross " + offspring);
 
             List<Chromosome> offspringMutation;
             offspringMutation = performMutation(offspring);
-            System.out.println("Generation muta  " + offspringMutation);
 
 
             evaluateOffspring(offspringMutation);
             population = replacePopulation(offspringMutation);
 
-            System.out.println("Generation repl" + this.population.getIndividuals());
-            this.printGeneration();
 
             updateBestSolution(generation);
 
@@ -145,7 +135,6 @@ public class GeneticAlgorithm {
             }
         }
 
-        System.out.println("Offspring: " + offspring);
         return offspring;
     }
 
@@ -195,7 +184,6 @@ public class GeneticAlgorithm {
 
     private void printFinalResults() {
         System.out.println("\n========== Final Results ==========");
-        System.out.printf("Best Fitness: %.6f%n", bestFitness);
         System.out.println("Best Solution: " + bestSolution);
         System.out.println("===================================\n");
     }

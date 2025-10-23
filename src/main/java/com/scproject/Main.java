@@ -216,7 +216,6 @@ public class Main {
         System.out.println("\nStarting GA for Routing (towers = " + nTowers + ") ...");
         ga.run();
 
-        System.out.println("\nDone. Best fitness: " + ga.getBestFitness());
         Chromosome best = ga.getBestSolution();
         System.out.println("Best route: " + best);
     }
