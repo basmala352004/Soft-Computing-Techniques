@@ -33,6 +33,18 @@ public class Population {
         sorted = false;
     }
 
+    public List<Chromosome> getSortedByFitnessDescending() {
+        List<Chromosome> sorted = new ArrayList<>(individuals);
+        sorted.sort(Comparator.comparingDouble(Chromosome::getFitness).reversed());
+        return sorted;
+    }
+
+    public List<Chromosome> getSortedByFitnessAscending() {
+        List<Chromosome> sorted = new ArrayList<>(individuals);
+        sorted.sort(Comparator.comparingDouble(Chromosome::getFitness));
+        return sorted;
+    }
+
     public void addIndividual(Chromosome individual) {
         individuals.add(individual);
         size++;

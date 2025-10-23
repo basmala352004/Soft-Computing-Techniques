@@ -1,0 +1,52 @@
+package com.scproject.mutation;
+
+import com.scproject.chromosome.Chromosome;
+import java.util.*;
+
+public class binaryBitFlipMutation implements MutationStrategy{
+
+    private double mutationRate;
+    private final Random random = new Random();
+
+    public binaryBitFlipMutation(double mutationRate) {
+        this.mutationRate = mutationRate;
+    }
+
+    @Override
+    public void mutate(Chromosome chromosome) {
+        Object[] genes = chromosome.getGenes();
+
+        for (int i = 0; i < genes.length; i++) {
+            if (random.nextDouble() < mutationRate) {
+                Object gene = genes[i];
+
+                if (gene instanceof Boolean) {
+                    // Flip boolean
+                    genes[i] = !((Boolean) gene);
+                } else if (gene instanceof Integer) {
+                    // Flip 0/1 integer
+                    int value = (Integer) gene;
+                    genes[i] = (value == 0) ? 1 : 0;
+                } else {
+                    throw new IllegalArgumentException(
+                            "BitFlipMutation only supports Boolean or 0/1 Integer genes"
+                    );
+                }
+            }
+        }
+
+        // Return a new mutated chromosome
+        chromosome.setGenes(genes);
+        chromosome.resetEvaluation();
+    }
+
+    @Override
+    public void setMutationRate(double mutationRate) {
+        this.mutationRate = mutationRate;
+    }
+
+    @Override
+    public boolean isApplicable(Chromosome chromosome) {
+        return MutationStrategy.super.isApplicable(chromosome);
+    }
+}
