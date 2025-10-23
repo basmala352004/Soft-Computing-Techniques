@@ -26,11 +26,8 @@ public class RoutingConstraintHandler implements ConstraintHandler {
             int current = route[i];
 
             if (!validTowerIds.contains(current)) return false;
-
-
             if (visited.contains(current)) return false;
             visited.add(current);
-
 
             if (i > 0) {
                 int prev = route[i - 1];
@@ -43,6 +40,6 @@ public class RoutingConstraintHandler implements ConstraintHandler {
 
     @Override
     public double adjustFitness(Chromosome chromosome, double originalFitness) {
-        return originalFitness * 0.5;
+        return originalFitness * 0.5; // Penalize infeasible routes
     }
 }
