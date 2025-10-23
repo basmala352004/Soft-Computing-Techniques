@@ -22,7 +22,6 @@ public class SteadyStateReplacement implements ReplacementStrategy {
 
         individuals.sort(Comparator.comparingDouble(Chromosome::getFitness).reversed());
 
-        // Replace the K worst individuals with new offspring
         int replaceCount = Math.min(replacementCount, Math.min(offspring.size(), popSize));
         for (int i = 0; i < replaceCount; i++) {
             individuals.set(popSize - 1 - i, offspring.get(i));

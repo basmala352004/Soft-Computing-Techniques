@@ -75,7 +75,6 @@ public class FPChromosome extends Chromosome {
         return sb.toString();
     }
 
-    // Additional accessors
     public double getLowerBound() {
         return lowerBound;
     }

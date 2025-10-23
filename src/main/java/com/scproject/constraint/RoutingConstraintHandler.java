@@ -39,13 +39,13 @@ public class RoutingConstraintHandler implements ConstraintHandler {
         Object[] genes = intChrom.getGenes();
 
         Set<Object> unique = new HashSet<>(Arrays.asList(genes));
-        // Feasible if all genes are unique and none are null
+
         return unique.size() == genes.length && !Arrays.asList(genes).contains(null);
     }
 
     @Override
     public double adjustFitness(Chromosome chromosome, double originalFitness) {
-        return originalFitness * 0.5; // Penalize infeasible routes
+        return originalFitness * 0.5;
     }
 
     @Override
@@ -64,11 +64,10 @@ public class RoutingConstraintHandler implements ConstraintHandler {
         for (int i = 0; i < length; i++) {
             Integer val = (Integer) genes[i];
             if (!seen.add(val)) {
-                duplicates.add(i); // record index of duplicate
+                duplicates.add(i);
             }
         }
 
-        // Find missing elements
         List<Integer> missing = new ArrayList<>();
         for (int i = intChrom.getLowerBound(); i <= intChrom.getUpperBound(); i++) {
             if (!seen.contains(i)) {
@@ -76,14 +75,14 @@ public class RoutingConstraintHandler implements ConstraintHandler {
             }
         }
 
-        // Shuffle missing elements for randomness
+        //Shuffle missing elements for randomness
         Collections.shuffle(missing);
         for (int i = 0; i < duplicates.size() && !missing.isEmpty(); i++) {
             int index = duplicates.get(i);
             genes[index] = missing.remove(0);
         }
 
-        // Fix nulls (if any)
+        //Fix nulls
         for (int i = 0; i < length && !missing.isEmpty(); i++) {
             if (genes[i] == null) {
                 genes[i] = missing.remove(0);

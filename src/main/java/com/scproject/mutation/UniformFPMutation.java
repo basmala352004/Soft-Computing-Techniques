@@ -41,7 +41,7 @@ public class UniformFPMutation implements MutationStrategy {
                 double deltaL = xi - lowerBound;
                 double deltaU = upperBound - xi;
 
-                // If both deltas are <= 0 then xi is exactly at bounds and cannot move.
+                //If both deltas are <= 0 then xi is exactly at bounds and cannot move.
                 if (deltaL <= 0.0 && deltaU <= 0.0) {
                     continue;
                 }
@@ -51,9 +51,7 @@ public class UniformFPMutation implements MutationStrategy {
 
                 double Delta = goLeft ? Math.max(0.0, deltaL) : Math.max(0.0, deltaU);
 
-                // If Delta is zero (e.g., at bound on chosen side), flip direction if other side available
                 if (Delta == 0.0) {
-                    // try the other side
                     if (goLeft && deltaU > 0.0) {
                         goLeft = false;
                         Delta = deltaU;
@@ -61,7 +59,7 @@ public class UniformFPMutation implements MutationStrategy {
                         goLeft = true;
                         Delta = deltaL;
                     } else {
-                        // both deltas zero: nothing to change
+                        //if both deltas are equal zero change nothing
                         continue;
                     }
                 }

@@ -10,8 +10,8 @@ import java.util.Set;
 public class RoutingFitnessFunction implements FitnessFunction {
 
     private final Map<Integer, Set<Integer>> towerConnections;
-    private final Map<Integer, Double> towerThroughput;             // Mbps
-    private final Map<Integer, Map<Integer, Double>> towerDistance; // distance between towers (km or cost units)
+    private final Map<Integer, Double> towerThroughput;
+    private final Map<Integer, Map<Integer, Double>> towerDistance;
 
     public RoutingFitnessFunction(
             Map<Integer, Set<Integer>> towerConnections,
@@ -49,7 +49,7 @@ public class RoutingFitnessFunction implements FitnessFunction {
                 totalDistance += towerDistance.getOrDefault(from, Map.of())
                         .getOrDefault(to, 1.0);
             } else {
-                // Penalize invalid link
+                //Penalize invalid link
                 totalDistance += 5.0;
                 totalThroughput -= 10.0;
             }
@@ -60,9 +60,9 @@ public class RoutingFitnessFunction implements FitnessFunction {
         double avgThroughput = totalThroughput / validConnections;
         double avgDistance = totalDistance / validConnections;
 
-        // throughput favors higher values, distance penalizes longer links
-        double ratio = avgThroughput / (avgThroughput + avgDistance * 10); // tweak *10 as scaling factor
-        double fitnessPercent = ratio * 100.0;  // convert to percentage
+        //throughput favors higher values, distance penalizes longer links, scale *10
+        double ratio = avgThroughput / (avgThroughput + avgDistance * 10);
+        double fitnessPercent = ratio * 100.0;
 
         return Math.max(fitnessPercent, 0.0);
     }

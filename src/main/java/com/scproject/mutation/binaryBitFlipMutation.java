@@ -21,10 +21,8 @@ public class binaryBitFlipMutation implements MutationStrategy{
                 Object gene = genes[i];
 
                 if (gene instanceof Boolean) {
-                    // Flip boolean
                     genes[i] = !((Boolean) gene);
                 } else if (gene instanceof Integer) {
-                    // Flip 0/1 integer
                     int value = (Integer) gene;
                     genes[i] = (value == 0) ? 1 : 0;
                 } else {
@@ -35,7 +33,6 @@ public class binaryBitFlipMutation implements MutationStrategy{
             }
         }
 
-        // Return a new mutated chromosome
         chromosome.setGenes(genes);
         chromosome.resetEvaluation();
         return chromosome;

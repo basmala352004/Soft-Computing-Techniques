@@ -136,7 +136,6 @@ public class GeneticAlgorithm {
                 children = new Chromosome[]{parent1.clone(), parent2.clone()};
             }
 
-            // ✅ Repair children if needed
             for (int j = 0; j < children.length; j++) {
                 Chromosome child = children[j];
                 if (!constraintHandler.isFeasible(child)) {
@@ -157,7 +156,7 @@ public class GeneticAlgorithm {
             Chromosome individual = offspring.get(i);
             if (Math.random() < config.getMutationRate()) {
                 Chromosome mutated = mutationStrategy.mutate(individual);
-                offspring.set(i, mutated); // Replace with mutated version
+                offspring.set(i, mutated);
             }
         }
         return offspring;
@@ -219,7 +218,6 @@ population.printPopulation();    }
         }
     }
 
-    // Getters and Setters
     public Chromosome getBestSolution() {
         return bestSolution;
     }
@@ -236,7 +234,6 @@ population.printPopulation();    }
         return population;
     }
 
-    // Configuration setters for user convenience
     public void setPopulationSize(int size) {
         config.setPopulationSize(size);
     }

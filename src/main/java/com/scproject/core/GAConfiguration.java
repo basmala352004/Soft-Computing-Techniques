@@ -31,21 +31,19 @@ public class GAConfiguration {
         setDefaultValues();
     }
 
-    // for testing purposes
     private void setDefaultValues() {
         this.populationSize = 100;
         this.generations = 100;
         this.chromosomeLength = 10;
-        this.numberOfParents = 50;
+        this.numberOfParents = 100;
         this.crossoverRate = 0.8;
         this.mutationRate = 0.01;
         this.verbose = true;
         this.printFrequency = 10;
 
-        // uncomment when implemented
         this.selectionStrategy = new rankSelection();
-        // this.crossoverStrategy = new SinglePointCrossover();
-        // this.mutationStrategy = null; // Will be set based on chromosome type
+        this.crossoverStrategy = new UniformMethod();
+        this.mutationStrategy = null;
         this.replacementStrategy = new ElitistReplacement();
         this.replacementStrategy.setEliteCount(2);
     }
@@ -74,7 +72,6 @@ public class GAConfiguration {
         }
     }
 
-    // Getters
     public int getPopulationSize() {
         return populationSize;
     }
@@ -127,7 +124,6 @@ public class GAConfiguration {
         return replacementStrategy;
     }
 
-    // Setters
     public void setPopulationSize(int populationSize) {
         if (populationSize <= 0) {
             throw new IllegalArgumentException("Population size must be positive");

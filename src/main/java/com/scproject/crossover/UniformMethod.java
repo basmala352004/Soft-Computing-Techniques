@@ -14,24 +14,19 @@ public class UniformMethod implements CrossoverStrategy{
 
     @Override
     public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate, ConstraintHandler constraintHandler){
-        //Validate Chromosomes
         validate(parent1,parent2,crossoverRate);
 
-        //Make Copies
         Chromosome offspring1 = parent1.clone();
         Chromosome offspring2 = parent2.clone();
 
 
-        //Old genes
         Object[] gene1 = offspring1.getGenes();
         Object[] gene2 = offspring2.getGenes();
         int length = gene1.length;
 
-       //New genes
        Object[] newGene1 = new Object[length];
        Object[] newGene2 = new Object[length];
 
-       //Flip the coin
         for(int i = 0; i < length; i++) {
             double randomCoin = randomNumber.nextDouble();
             if(randomCoin <= 0.5){
@@ -52,7 +47,6 @@ public class UniformMethod implements CrossoverStrategy{
             }
         }
 
-        //Update offspring
         offspring1.setGenes(newGene1);
         offspring2.setGenes(newGene2);
 
