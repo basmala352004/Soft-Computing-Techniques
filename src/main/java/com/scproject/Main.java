@@ -1,13 +1,16 @@
 package com.scproject;
 
-import com.scproject.chromosome.RoutingChromosome;
+import com.scproject.chromosome.IntegerChromosome;
 import com.scproject.core.GeneticAlgorithm;
 import com.scproject.core.GAConfiguration;
+import com.scproject.crossover.TwoPointsMethod;
+import com.scproject.crossover.UniformMethod;
 import com.scproject.fitness.RoutingFitnessFunction;
 import com.scproject.constraint.RoutingConstraintHandler;
 import com.scproject.selection.rankSelection;
 import com.scproject.crossover.OrderMethod;
-import com.scproject.mutation.SwapMutation;
+import com.scproject.mutation.*;
+
 import com.scproject.replacement.ElitistReplacement;
 import com.scproject.chromosome.Chromosome;
 
@@ -20,6 +23,7 @@ public class Main {
         // -------------------------
         // Example: 6 towers (0..5)
         int nTowers = 6;
+
         Set<Integer> towerIds = new HashSet<>();
         for (int i = 0; i < nTowers; i++) towerIds.add(i);
 
@@ -50,7 +54,7 @@ public class Main {
         // 2) Prepare GA components
         // -------------------------
         GAConfiguration config = new GAConfiguration();
-        config.setPopulationSize(80);
+        config.setPopulationSize(8);
         config.setGenerations(120);
         config.setChromosomeLength(nTowers);
         config.setNumberOfParents(40);
@@ -59,16 +63,17 @@ public class Main {
         config.setVerbose(true);
         config.setPrintFrequency(10);
 
-        // chromosome prototype (permutation)
-        RoutingChromosome prototype = new RoutingChromosome(nTowers);
-        config.setChromosomePrototype(prototype);
+        IntegerChromosome chromosome = new IntegerChromosome(nTowers);
+        config.setChromosomePrototype(chromosome);
 
         // selection, crossover, mutation, replacement
         config.setSelectionStrategy(new rankSelection());   // or new com.scproject.selection.rouletteStrategy()
-        config.setCrossoverStrategy(new OrderMethod());
+        config.setCrossoverStrategy(new TwoPointsMethod() );
         SwapMutation swapMutation = new SwapMutation();
         swapMutation.setMutationRate(0.2);
-        config.setMutationStrategy(swapMutation);
+        InversionMutation inversionMutation = new InversionMutation();
+        inversionMutation.setMutationRate(0.2);
+        config.setMutationStrategy( inversionMutation);
         ElitistReplacement replacement = new ElitistReplacement();
         replacement.setEliteCount(2);
         config.setReplacementStrategy(replacement);

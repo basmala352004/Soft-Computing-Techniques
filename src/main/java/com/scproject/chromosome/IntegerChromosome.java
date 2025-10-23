@@ -1,5 +1,6 @@
 package com.scproject.chromosome;
 
+import java.util.*;
 import java.util.Random;
 
 public class IntegerChromosome extends Chromosome {
@@ -8,7 +9,7 @@ public class IntegerChromosome extends Chromosome {
     private int upperBound;
 
     public IntegerChromosome(int length) {
-        this(length, 0, 10);
+        this(length, 0, length-1);
     }
 
     public IntegerChromosome(int length, int lowerBound, int upperBound) {
@@ -22,8 +23,14 @@ public class IntegerChromosome extends Chromosome {
     public void initialize() {
         Random random = new Random();
         for (int i = 0; i < length; i++) {
-            genes[i] = random.nextInt(upperBound - lowerBound + 1) + lowerBound;
+            genes[i] = i;
         }
+        List<Integer> list = Arrays.asList(genes);
+        Collections.shuffle(list);
+        genes = list.toArray(new Integer[0]);
+
+        System.out.println(this.toString());
+
     }
 
     @Override
