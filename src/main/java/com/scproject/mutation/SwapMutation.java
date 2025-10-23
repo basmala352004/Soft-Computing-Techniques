@@ -17,7 +17,7 @@ public class SwapMutation implements MutationStrategy {
     }
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public Chromosome mutate(Chromosome chromosome) {
         if (!(chromosome instanceof IntegerChromosome)) {
             throw new IllegalArgumentException("SwapMutation only applies to IntegerChromosome");
         }
@@ -25,7 +25,7 @@ public class SwapMutation implements MutationStrategy {
         IntegerChromosome intChrom = (IntegerChromosome) chromosome;
         Object[] genes = intChrom.getGenes();
 
-        if (random.nextDouble() < mutationRate) {
+        //if (random.nextDouble() < mutationRate) {
             int index1 = random.nextInt(genes.length);
             int index2 = random.nextInt(genes.length);
 
@@ -39,7 +39,8 @@ public class SwapMutation implements MutationStrategy {
 
             intChrom.setGenes(genes);
             intChrom.resetEvaluation();
-        }
+        //}
+        return chromosome;
     }
 
     @Override

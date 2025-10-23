@@ -1,10 +1,11 @@
 package com.scproject.crossover;
 
 import com.scproject.chromosome.Chromosome;
+import com.scproject.constraint.ConstraintHandler;
 
 public interface CrossoverStrategy {
 
-    Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate);
+    Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate, ConstraintHandler constraintHandler);
 
     String getName();
 

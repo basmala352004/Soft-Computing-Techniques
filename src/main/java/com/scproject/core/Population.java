@@ -166,4 +166,10 @@ public class Population {
         sb.append("}");
         return sb.toString();
     }
+
+    public void printPopulation() {
+        for (Chromosome individual : individuals) {
+            System.out.println(individual.toString());
+        }
+    }
 }

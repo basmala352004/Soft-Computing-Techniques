@@ -7,6 +7,8 @@ import com.scproject.crossover.TwoPointsMethod;
 import com.scproject.crossover.UniformMethod;
 import com.scproject.fitness.RoutingFitnessFunction;
 import com.scproject.constraint.RoutingConstraintHandler;
+import com.scproject.replacement.GenerationalReplacement;
+import com.scproject.replacement.SteadyStateReplacement;
 import com.scproject.selection.rankSelection;
 import com.scproject.crossover.OrderMethod;
 import com.scproject.mutation.*;
@@ -31,6 +33,9 @@ public class Main {
         Map<Integer, Set<Integer>> connections = new HashMap<>();
         for (int i = 0; i < nTowers; i++) connections.put(i, new HashSet<>());
 
+        Map<Integer, Map<Integer, Double>> towerDistance = new HashMap<>();
+
+
         // define some links (symmetric)
         connect(connections, 0, 1);
         connect(connections, 0, 2);
@@ -41,6 +46,36 @@ public class Main {
         connect(connections, 3, 5);
         connect(connections, 4, 5);
 
+
+        // Initialize submaps
+        for (int i = 0; i < nTowers; i++) {
+            towerDistance.put(i, new HashMap<>());
+        }
+
+        // Define distances (symmetric)
+        towerDistance.get(0).put(1, 4.5);
+        towerDistance.get(1).put(0, 4.5);
+
+        towerDistance.get(0).put(2, 3.2);
+        towerDistance.get(2).put(0, 3.2);
+
+        towerDistance.get(1).put(2, 2.1);
+        towerDistance.get(2).put(1, 2.1);
+
+        towerDistance.get(1).put(3, 5.0);
+        towerDistance.get(3).put(1, 5.0);
+
+        towerDistance.get(2).put(4, 4.3);
+        towerDistance.get(4).put(2, 4.3);
+
+        towerDistance.get(3).put(4, 3.8);
+        towerDistance.get(4).put(3, 3.8);
+
+        towerDistance.get(3).put(5, 2.7);
+        towerDistance.get(5).put(3, 2.7);
+
+        towerDistance.get(4).put(5, 3.5);
+        towerDistance.get(5).put(4, 3.5);
         // Tower load (0.0 = empty, 1.0 = full). Prefer low-load towers.
         Map<Integer, Double> towerLoad = new HashMap<>();
         towerLoad.put(0, 0.2);
@@ -68,20 +103,23 @@ public class Main {
 
         // selection, crossover, mutation, replacement
         config.setSelectionStrategy(new rankSelection());   // or new com.scproject.selection.rouletteStrategy()
-        config.setCrossoverStrategy(new TwoPointsMethod() );
+        config.setCrossoverStrategy(new UniformMethod() );
         SwapMutation swapMutation = new SwapMutation();
-        swapMutation.setMutationRate(0.2);
+        swapMutation.setMutationRate(0.5);
         InversionMutation inversionMutation = new InversionMutation();
         inversionMutation.setMutationRate(0.2);
         config.setMutationStrategy( inversionMutation);
+        //GenerationalReplacement replacement = new GenerationalReplacement();
+        //SteadyStateReplacement replacement = new SteadyStateReplacement();
         ElitistReplacement replacement = new ElitistReplacement();
         replacement.setEliteCount(2);
+
         config.setReplacementStrategy(replacement);
 
         // -------------------------
         // 3) Fitness + Constraints
         // -------------------------
-        RoutingFitnessFunction fitnessFunction = new RoutingFitnessFunction(connections, towerLoad);
+        RoutingFitnessFunction fitnessFunction = new RoutingFitnessFunction(connections, towerLoad, towerDistance);
         RoutingConstraintHandler constraintHandler = new RoutingConstraintHandler(towerIds, connections);
 
         // -------------------------

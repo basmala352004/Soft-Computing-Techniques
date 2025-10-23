@@ -1,6 +1,8 @@
 package com.scproject.crossover;
 
 import com.scproject.chromosome.Chromosome;
+import com.scproject.constraint.ConstraintHandler;
+
 import java.util.Random;
 
 public class UniformMethod implements CrossoverStrategy{
@@ -11,16 +13,14 @@ public class UniformMethod implements CrossoverStrategy{
     }
 
     @Override
-    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate){
+    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate, ConstraintHandler constraintHandler){
         //Validate Chromosomes
         validate(parent1,parent2,crossoverRate);
 
         //Make Copies
         Chromosome offspring1 = parent1.clone();
         Chromosome offspring2 = parent2.clone();
-        if (randomNumber.nextDouble() > crossoverRate) {
-            return new Chromosome[]{offspring1, offspring2};
-        }
+
 
         //Old genes
         Object[] gene1 = offspring1.getGenes();
@@ -37,10 +37,18 @@ public class UniformMethod implements CrossoverStrategy{
             if(randomCoin <= 0.5){
                 newGene1[i] = gene1[i];
                 newGene2[i] = gene2[i];
+                if (!constraintHandler.isFeasible(offspring1) || !constraintHandler.isFeasible(offspring2)) {
+                    newGene1[i] = gene2[i];
+                    newGene2[i] = gene1[i];
+                }
             }
             else{
                 newGene1[i] = gene2[i];
                 newGene2[i] = gene1[i];
+                if (!constraintHandler.isFeasible(offspring1) || !constraintHandler.isFeasible(offspring2)) {
+                    newGene1[i] = gene2[i];
+                    newGene2[i] = gene1[i];
+                }
             }
         }
 

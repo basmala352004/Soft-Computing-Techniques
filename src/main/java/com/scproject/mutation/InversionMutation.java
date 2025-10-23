@@ -16,7 +16,7 @@ public class InversionMutation implements MutationStrategy {
     }
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public Chromosome mutate(Chromosome chromosome) {
         if (!(chromosome instanceof IntegerChromosome)) {
             throw new IllegalArgumentException("InversionMutation only applies to IntegerChromosome");
         }
@@ -24,7 +24,7 @@ public class InversionMutation implements MutationStrategy {
         IntegerChromosome intChrom = (IntegerChromosome) chromosome;
         Object[] genes = intChrom.getGenes();
 
-        if (random.nextDouble() < mutationRate && genes.length > 2) {
+        if ( genes.length > 2) {
             int point1 = random.nextInt(genes.length);
             int point2 = random.nextInt(genes.length);
 
@@ -47,6 +47,7 @@ public class InversionMutation implements MutationStrategy {
             intChrom.setGenes(genes);
             intChrom.resetEvaluation();
         }
+        return chromosome;
     }
 
     @Override

@@ -15,7 +15,7 @@ public interface MutationStrategy {
      *
      * @param chromosome The chromosome to mutate
      */
-    void mutate(Chromosome chromosome);
+    Chromosome mutate(Chromosome chromosome);
 
     /**
      * Set the mutation rate (probability of mutating each gene).

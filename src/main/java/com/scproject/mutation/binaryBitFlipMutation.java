@@ -13,7 +13,7 @@ public class binaryBitFlipMutation implements MutationStrategy{
     }
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public Chromosome mutate(Chromosome chromosome) {
         Object[] genes = chromosome.getGenes();
 
         for (int i = 0; i < genes.length; i++) {
@@ -38,6 +38,7 @@ public class binaryBitFlipMutation implements MutationStrategy{
         // Return a new mutated chromosome
         chromosome.setGenes(genes);
         chromosome.resetEvaluation();
+        return chromosome;
     }
 
     @Override

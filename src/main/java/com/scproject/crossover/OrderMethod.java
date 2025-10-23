@@ -1,6 +1,7 @@
 package com.scproject.crossover;
 
 import com.scproject.chromosome.Chromosome;
+import com.scproject.constraint.ConstraintHandler;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -13,7 +14,7 @@ public class OrderMethod implements CrossoverStrategy{
         randomNumber = new Random();
     }
 
-    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate) {
+    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate, ConstraintHandler constraintHandler) {
         //Validate Chromosomes
         validate(parent1,parent2,crossoverRate);
         //Make Copies
@@ -23,10 +24,8 @@ public class OrderMethod implements CrossoverStrategy{
         if (randomNumber.nextDouble() > crossoverRate) {
             return new Chromosome[]{offspring1, offspring2};
         }
-
         //Perform Order method for offspring1(using parent1 and parent2)
         doOrderMethod(offspring1, parent1, parent2);
-
         //Perform order method for offspring2(using parent2 and parent1)
         doOrderMethod(offspring2, parent2, parent1);
         return new Chromosome[]{offspring1, offspring2};

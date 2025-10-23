@@ -1,6 +1,8 @@
 package com.scproject.crossover;
 
 import com.scproject.chromosome.Chromosome;
+import com.scproject.constraint.ConstraintHandler;
+
 import java.util.Random;
 
 public class TwoPointsMethod implements CrossoverStrategy{
@@ -11,7 +13,7 @@ public class TwoPointsMethod implements CrossoverStrategy{
     }
 
     @Override
-    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate) {
+    public Chromosome[] crossover(Chromosome parent1, Chromosome parent2, double crossoverRate, ConstraintHandler constraintHandler) {
 
         //Validate the chromosomes
         validate(parent1,parent2,crossoverRate);

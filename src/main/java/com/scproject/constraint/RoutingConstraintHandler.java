@@ -35,11 +35,63 @@ public class RoutingConstraintHandler implements ConstraintHandler {
             }
         }
 
-        return true;
+        IntegerChromosome intChrom = (IntegerChromosome) chromosome;
+        Object[] genes = intChrom.getGenes();
+
+        Set<Object> unique = new HashSet<>(Arrays.asList(genes));
+        // Feasible if all genes are unique and none are null
+        return unique.size() == genes.length && !Arrays.asList(genes).contains(null);
     }
 
     @Override
     public double adjustFitness(Chromosome chromosome, double originalFitness) {
         return originalFitness * 0.5; // Penalize infeasible routes
+    }
+
+    @Override
+    public Chromosome repair(Chromosome chromosome) {
+        if (!(chromosome instanceof IntegerChromosome)) {
+            throw new IllegalArgumentException("Repair only supports IntegerChromosome or RoutingChromosome");
+        }
+
+        IntegerChromosome intChrom = (IntegerChromosome) chromosome;
+        Object[] genes = intChrom.getGenes();
+        int length = genes.length;
+
+        Set<Integer> seen = new HashSet<>();
+        List<Integer> duplicates = new ArrayList<>();
+
+        for (int i = 0; i < length; i++) {
+            Integer val = (Integer) genes[i];
+            if (!seen.add(val)) {
+                duplicates.add(i); // record index of duplicate
+            }
+        }
+
+        // Find missing elements
+        List<Integer> missing = new ArrayList<>();
+        for (int i = intChrom.getLowerBound(); i <= intChrom.getUpperBound(); i++) {
+            if (!seen.contains(i)) {
+                missing.add(i);
+            }
+        }
+
+        // Shuffle missing elements for randomness
+        Collections.shuffle(missing);
+        for (int i = 0; i < duplicates.size() && !missing.isEmpty(); i++) {
+            int index = duplicates.get(i);
+            genes[index] = missing.remove(0);
+        }
+
+        // Fix nulls (if any)
+        for (int i = 0; i < length && !missing.isEmpty(); i++) {
+            if (genes[i] == null) {
+                genes[i] = missing.remove(0);
+            }
+        }
+
+        intChrom.setGenes(genes);
+        intChrom.resetEvaluation();
+        return intChrom;
     }
 }

@@ -50,7 +50,5 @@ public interface ConstraintHandler {
      * @param chromosome The chromosome to repair
      * @return true if repair was successful, false otherwise
      */
-    default boolean repair(Chromosome chromosome) {
-        return false;
-    }
+    Chromosome repair(Chromosome chromosome);
 }

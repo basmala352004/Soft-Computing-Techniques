@@ -22,7 +22,7 @@ public class UniformFPMutation implements MutationStrategy {
     }
 
     @Override
-    public void mutate(Chromosome chromosome) {
+    public Chromosome mutate(Chromosome chromosome) {
         Object[] genes = chromosome.getGenes();
 
         for (int i = 0; i < genes.length; i++) {
@@ -77,6 +77,7 @@ public class UniformFPMutation implements MutationStrategy {
 
         chromosome.setGenes(genes);
         chromosome.resetEvaluation();
+        return chromosome;
     }
 
     @Override

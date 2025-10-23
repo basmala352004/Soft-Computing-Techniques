@@ -4,7 +4,7 @@ import com.scproject.chromosome.Chromosome;
 import com.scproject.core.Population;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class GenerationalReplacement implements ReplacementStrategy {
@@ -21,11 +21,10 @@ public class GenerationalReplacement implements ReplacementStrategy {
             );
         }
 
-        List<Chromosome> newIndividuals = new ArrayList<>();
+        offspring.sort(Comparator.comparingDouble(Chromosome::getFitness).reversed());
 
-        for (Chromosome chromosome : offspring) {
-            newIndividuals.add(chromosome);
-        }
+        List<Chromosome> newIndividuals = offspring.subList(0, Math.min(popSize, offspring.size()));
+
 
         return new Population(newIndividuals);
     }

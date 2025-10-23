@@ -40,15 +40,30 @@ public class GeneticAlgorithm {
         validateConfiguration();
         initialize();
 
+        System.out.println("NEEWWWW");
+        this.printGeneration();
         for (int generation = 0; generation < config.getGenerations(); generation++) {
             evaluatePopulation();
+            System.out.println("NEEWWWW");
+            this.printGeneration();
 
+            System.out.println("Generation " + generation);
+            System.out.println("Generation tests " + population.getIndividuals());
             List<Chromosome> parents = selectParents();
-            List<Chromosome> offspring = performCrossover(parents);
-            performMutation(offspring);
 
-            evaluateOffspring(offspring);
-            population = replacePopulation(offspring);
+            List<Chromosome> offspring = performCrossover(parents);
+            System.out.println("Generation cross " + offspring);
+
+            List<Chromosome> offspringMutation;
+            offspringMutation = performMutation(offspring);
+            System.out.println("Generation muta  " + offspringMutation);
+
+
+            evaluateOffspring(offspringMutation);
+            population = replacePopulation(offspringMutation);
+
+            System.out.println("Generation repl" + this.population.getIndividuals());
+            this.printGeneration();
 
             updateBestSolution(generation);
 
@@ -111,27 +126,41 @@ public class GeneticAlgorithm {
         List<Chromosome> offspring = new ArrayList<>();
 
         for (int i = 0; i < parents.size() - 1; i += 2) {
+            Chromosome parent1 = parents.get(i);
+            Chromosome parent2 = parents.get(i + 1);
+            Chromosome[] children;
+
             if (Math.random() < config.getCrossoverRate()) {
-                Chromosome[] children = crossoverStrategy.crossover(parents.get(i), parents.get(i + 1),config.getCrossoverRate());
-                offspring.add(children[0]);
-                offspring.add(children[1]);
+                children = crossoverStrategy.crossover(parent1, parent2, config.getCrossoverRate(), constraintHandler);
             } else {
-                offspring.add(parents.get(i).clone());
-                offspring.add(parents.get(i + 1).clone());
+                children = new Chromosome[]{parent1.clone(), parent2.clone()};
+            }
+
+            // ✅ Repair children if needed
+            for (int j = 0; j < children.length; j++) {
+                Chromosome child = children[j];
+                if (!constraintHandler.isFeasible(child)) {
+                    child = constraintHandler.repair(child);
+                }
+                offspring.add(child);
             }
         }
 
+        System.out.println("Offspring: " + offspring);
         return offspring;
     }
 
-    private void performMutation(List<Chromosome> offspring) {
+    private List<Chromosome> performMutation(List<Chromosome> offspring) {
         MutationStrategy mutationStrategy = config.getMutationStrategy();
 
-        for (Chromosome individual : offspring) {
+        for (int i = 0; i < offspring.size(); i++) {
+            Chromosome individual = offspring.get(i);
             if (Math.random() < config.getMutationRate()) {
-                mutationStrategy.mutate(individual);
+                Chromosome mutated = mutationStrategy.mutate(individual);
+                offspring.set(i, mutated); // Replace with mutated version
             }
         }
+        return offspring;
     }
 
     private void evaluateOffspring(List<Chromosome> offspring) {
@@ -171,6 +200,9 @@ public class GeneticAlgorithm {
         System.out.println("Best Solution: " + bestSolution);
         System.out.println("===================================\n");
     }
+
+    private void printGeneration(){
+population.printPopulation();    }
 
     private void validateConfiguration() {
         if (fitnessFunction == null) {
