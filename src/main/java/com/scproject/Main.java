@@ -1,16 +1,17 @@
 package com.scproject;
 
-import com.scproject.chromosome.IntegerChromosome;
-import com.scproject.core.GeneticAlgorithm;
-import com.scproject.core.GAConfiguration;
-import com.scproject.crossover.UniformMethod;
-import com.scproject.fitness.RoutingFitnessFunction;
-import com.scproject.constraint.RoutingConstraintHandler;
-import com.scproject.selection.rankSelection;
-import com.scproject.mutation.*;
+import com.scproject.ga.chromosome.IntegerChromosome;
+import com.scproject.ga.core.GeneticAlgorithm;
+import com.scproject.ga.core.GAConfiguration;
+import com.scproject.ga.crossover.UniformMethod;
+import com.scproject.ga.fitness.RoutingFitnessFunction;
+import com.scproject.ga.constraint.RoutingConstraintHandler;
+import com.scproject.ga.mutation.InversionMutation;
+import com.scproject.ga.mutation.SwapMutation;
+import com.scproject.ga.selection.rankSelection;
 
-import com.scproject.replacement.ElitistReplacement;
-import com.scproject.chromosome.Chromosome;
+import com.scproject.ga.replacement.ElitistReplacement;
+import com.scproject.ga.chromosome.Chromosome;
 
 import java.util.*;
 
