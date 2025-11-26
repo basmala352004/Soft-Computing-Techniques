@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="Sugeno Inference Rule First  Commit" />
+    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="Sugeno Inference Rule First  Commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/validation/UserInputReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/validation/ValidationException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/validation/InputValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/validation/InputValidator.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -181,7 +187,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764184642108</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Sugeno Inference Rule First  Commit">
+      <option name="closed" value="true" />
+      <created>1764184882535</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1764184882535</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

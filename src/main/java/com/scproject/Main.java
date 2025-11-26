@@ -234,6 +234,7 @@ import com.scproject.fuzzy.membership.TriangularMF;
 import com.scproject.fuzzy.operator.MinOperator;
 import com.scproject.fuzzy.operator.MaxOperator;
 import com.scproject.fuzzy.rulebase.RuleBase;
+import com.scproject.fuzzy.validation.UserInputReader;
 
 import java.util.*;
 
@@ -241,22 +242,10 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
-
         System.out.println("=== Traffic Light Timing Controller ===");
 
         // -----------------------------
-        // 1) USER INPUT
-        // -----------------------------
-        System.out.print("Enter Traffic Density (0–100): ");
-        double trafficDensity = in.nextDouble();
-
-        System.out.print("Enter Waiting Time in seconds (0–120): ");
-        double waitingTime = in.nextDouble();
-
-
-        // -----------------------------
-        // 2) DEFINE INPUT VARIABLE: Traffic Density
+        // 1) DEFINE INPUT VARIABLE: Traffic Density
         // -----------------------------
         FuzzyVariable density = new FuzzyVariable();
         density.setName("Density");
@@ -267,12 +256,10 @@ public class Main {
         densitySets.put("Low", new FuzzySet("Low", new TriangularMF(0, 0, 40)));
         densitySets.put("Medium", new FuzzySet("Medium", new TriangularMF(20, 50, 80)));
         densitySets.put("High", new FuzzySet("High", new TriangularMF(60, 100, 100)));
-
         density.setFuzzySets(densitySets);
 
-
         // -----------------------------
-        // 3) DEFINE INPUT VARIABLE: Waiting Time
+        // 2) DEFINE INPUT VARIABLE: Waiting Time
         // -----------------------------
         FuzzyVariable wait = new FuzzyVariable();
         wait.setName("WaitingTime");
@@ -283,9 +270,13 @@ public class Main {
         waitSets.put("Short", new FuzzySet("Short", new TriangularMF(0, 0, 40)));
         waitSets.put("Medium", new FuzzySet("Medium", new TriangularMF(30, 60, 90)));
         waitSets.put("Long", new FuzzySet("Long", new TriangularMF(80, 120, 120)));
-
         wait.setFuzzySets(waitSets);
 
+        // -----------------------------
+        // 3) USER INPUT using VALIDATION
+        // -----------------------------
+        double trafficDensity = UserInputReader.readValidatedInput(density);
+        double waitingTime = UserInputReader.readValidatedInput(wait);
 
         // -----------------------------
         // 4) OUTPUT VARIABLE: Green Light Duration
@@ -299,54 +290,28 @@ public class Main {
         durationSets.put("Short", new FuzzySet("Short", new TriangularMF(0, 0, 20)));
         durationSets.put("Medium", new FuzzySet("Medium", new TriangularMF(15, 30, 45)));
         durationSets.put("Long", new FuzzySet("Long", new TriangularMF(40, 60, 60)));
-
         duration.setFuzzySets(durationSets);
-
 
         // -----------------------------
         // 5) RULE BASE
         // -----------------------------
         RuleBase rb = new RuleBase();
 
-        // Rule 1: If Density is Low AND Waiting is Short => Duration Short
         rb.addRule(new FuzzyRule(
                 Map.of("Density", "Low", "WaitingTime", "Short"),
-                "GreenDuration",
-                "Short",
-                "AND",
-                1.0,
-                true
-        ));
+                "GreenDuration", "Short", "AND", 1.0, true));
 
-        // Rule 2: If Density Medium AND Waiting Medium => Duration Medium
         rb.addRule(new FuzzyRule(
                 Map.of("Density", "Medium", "WaitingTime", "Medium"),
-                "GreenDuration",
-                "Medium",
-                "AND",
-                1.0,
-                true
-        ));
+                "GreenDuration", "Medium", "AND", 1.0, true));
 
-        // Rule 3: If Density High AND Waiting Long => Duration Long
         rb.addRule(new FuzzyRule(
                 Map.of("Density", "High", "WaitingTime", "Long"),
-                "GreenDuration",
-                "Long",
-                "AND",
-                1.0,
-                true
-        ));
+                "GreenDuration", "Long", "AND", 1.0, true));
 
-        // RULE 4: If Density High OR Waiting Long => Duration Long
         rb.addRule(new FuzzyRule(
                 Map.of("Density", "High", "WaitingTime", "Long"),
-                "GreenDuration",
-                "Long",
-                "OR",
-                1.0,
-                true
-        ));
+                "GreenDuration", "Long", "OR", 1.0, true));
 
 
         // -----------------------------
@@ -354,7 +319,6 @@ public class Main {
         // -----------------------------
         MinOperator andOp = new MinOperator();
         MaxOperator orOp = new MaxOperator();
-
 
         // -----------------------------
         // 7) FUZZIFICATION
@@ -365,7 +329,6 @@ public class Main {
 
         System.out.println("\nFuzzification:");
         System.out.println(fuzzified);
-
 
         // -----------------------------
         // 8) INFERENCE + AGGREGATION
@@ -380,7 +343,6 @@ public class Main {
                 orOp
         );
 
-
         // -----------------------------
         // 9) DEFUZZIFICATION
         // -----------------------------
@@ -389,3 +351,4 @@ public class Main {
         System.out.println("\nFinal Output (Green Light Duration) = " + output + " seconds");
     }
 }
+
