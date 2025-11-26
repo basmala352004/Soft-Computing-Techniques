@@ -2,6 +2,7 @@ package com.scproject.fuzzy.inference;
 
 import com.scproject.fuzzy.core.FuzzySet;
 import com.scproject.fuzzy.core.FuzzyVariable;
+import com.scproject.fuzzy.core.FuzzyRule;
 import com.scproject.fuzzy.operator.FuzzyOperator;
 import com.scproject.fuzzy.rulebase.RuleBase;
 
@@ -13,6 +14,14 @@ public interface InferenceEngine {
             Map<String, Map<String, Double>> fuzzifiedInputs,
             RuleBase ruleBase,
             FuzzyVariable outputVariable,
+            FuzzyOperator andOperator,
+            FuzzyOperator orOperator);
+
+    String getType();
+
+    Map<FuzzyRule, Double> getRuleStrengths(
+            Map<String, Map<String, Double>> fuzzifiedInputs,
+            RuleBase ruleBase,
             FuzzyOperator andOperator,
             FuzzyOperator orOperator);
 }

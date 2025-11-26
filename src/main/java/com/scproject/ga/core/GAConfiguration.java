@@ -8,10 +8,10 @@ import com.scproject.ga.replacement.ElitistReplacement;
 import com.scproject.ga.replacement.ReplacementStrategy;
 import com.scproject.ga.selection.SelectionStrategy;
 import com.scproject.ga.selection.rankSelection;
-import  com.scproject.selection.*;
-import  com.scproject.crossover.*;
-import  com.scproject.mutation.*;
-import  com.scproject.replacement.*;
+import  com.scproject.ga.selection.*;
+import  com.scproject.ga.crossover.*;
+import  com.scproject.ga.mutation.*;
+import  com.scproject.ga.replacement.*;
 
 
 public class GAConfiguration {

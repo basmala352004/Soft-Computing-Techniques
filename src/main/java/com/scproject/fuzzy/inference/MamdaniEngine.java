@@ -151,9 +151,6 @@ public class MamdaniEngine implements InferenceEngine {
         return new FuzzySet(originalSet.getName() + "_α" + alpha, clippedMF);
     }
 
-    /**
-     * Gets the rule firing strengths for debugging/visualization.
-     */
     public Map<FuzzyRule, Double> getRuleStrengths(
             Map<String, Map<String, Double>> fuzzifiedInputs,
             RuleBase ruleBase,
@@ -161,5 +158,9 @@ public class MamdaniEngine implements InferenceEngine {
             FuzzyOperator orOperator) {
 
         return evaluateRules(fuzzifiedInputs, ruleBase, andOperator, orOperator);
+    }
+    @Override
+    public String getType() {
+        return "MAMDANI";
     }
 }

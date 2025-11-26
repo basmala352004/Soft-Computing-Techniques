@@ -4,13 +4,6 @@ import com.scproject.fuzzy.core.FuzzyRule;
 
 import java.util.Map;
 
-/**
- * RuleEditor provides an API for creating, editing, enabling/disabling,
- * and managing fuzzy rules.
- *
- * This class serves as a high-level interface for rule management,
- * making it easier to build and modify rule bases programmatically.
- */
 public class RuleEditor {
 
     private final RuleBase ruleBase;
@@ -224,5 +217,48 @@ public class RuleEditor {
         }
 
         System.out.println("=".repeat(70));
+    }
+
+    //for SUGENO
+
+    public FuzzyRule createSugenoRule(
+            Map<String, String> antecedents,
+            String operator,
+            double outputValue) {
+
+        return createSugenoRule(antecedents, operator, outputValue, 1.0);
+    }
+
+    public FuzzyRule createSugenoRule(
+            Map<String, String> antecedents,
+            String operator,
+            double outputValue,
+            double weight) {
+
+        if (antecedents == null || antecedents.isEmpty()) {
+            throw new IllegalArgumentException("Antecedents cannot be null or empty");
+        }
+
+        if (operator == null || (!operator.equalsIgnoreCase("AND") && !operator.equalsIgnoreCase("OR"))) {
+            throw new IllegalArgumentException("Operator must be 'AND' or 'OR'");
+        }
+
+        if (weight < 0.0 || weight > 1.0) {
+            throw new IllegalArgumentException("Weight must be between 0.0 and 1.0");
+        }
+
+        FuzzyRule rule = new FuzzyRule(
+                antecedents,
+                null,
+                null,
+                operator.toUpperCase(),
+                weight,
+                true
+        );
+
+        rule.setSugenoRule(true);
+        rule.setSugenoOutputValue(outputValue);
+        ruleBase.addRule(rule);
+        return rule;
     }
 }
