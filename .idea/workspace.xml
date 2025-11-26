@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/core/FuzzyRule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/core/FuzzyRule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/core/FuzzySystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/core/FuzzySystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/inference/InferenceEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/inference/InferenceEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/inference/MamdaniEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/inference/MamdaniEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/inference/SugenoEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/inference/SugenoEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/rulebase/RuleEditor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fuzzy/rulebase/RuleEditor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/ga/core/GAConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/ga/core/GAConfiguration.java" afterDir="false" />
-    </list>
+    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="Sugeno Inference Rule First  Commit" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,6 +45,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "Application.SugenoTest.executor": "Run",
+    "Application.com.scproject.test.SugenoTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
@@ -162,11 +154,24 @@
       <updated>1761206931973</updated>
       <workItem from="1761206932614" duration="101000" />
       <workItem from="1764016665505" duration="4613000" />
-      <workItem from="1764021387903" duration="5135000" />
+      <workItem from="1764021387903" duration="5473000" />
     </task>
+    <task id="LOCAL-00001" summary="Sugeno Inference Rule First  Commit">
+      <option name="closed" value="true" />
+      <created>1764121986540</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1764121986540</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Sugeno Inference Rule First  Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Sugeno Inference Rule First  Commit" />
   </component>
 </project>
