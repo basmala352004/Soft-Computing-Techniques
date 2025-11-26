@@ -1,5 +1,6 @@
 package com.scproject.fuzzy.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class FuzzyVariable {
@@ -41,7 +42,20 @@ public class FuzzyVariable {
     }
 
     // Fuzzification: converts crisp value to membership degrees
-    public Map<String, Double> fuzzify(double crispValue){
-        return null;
+//    public Map<String, Double> fuzzify(double crispValue){
+//        return null;
+//    }
+
+    public Map<String, Double> fuzzify(double crispValue) {
+        Map<String, Double> memberships = new HashMap<>();
+
+        for (String setName : fuzzySets.keySet()) {
+            FuzzySet set = fuzzySets.get(setName);
+            double µ = set.getMembership(crispValue);
+            memberships.put(setName, µ);
+        }
+
+        return memberships;
     }
 }
+
