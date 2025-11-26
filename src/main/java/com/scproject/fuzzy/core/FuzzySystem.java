@@ -30,16 +30,16 @@ public class FuzzySystem {
 
     public double evaluate(Map<String, Double> crispInputs) {
 
-        //validation
+
         if (inputs.isEmpty()) throw new IllegalStateException("No inputs defined");
         if (inferenceEngine == null) throw new IllegalStateException("No inference engine");
         if (ruleBase == null) throw new IllegalStateException("No rule base");
         if (defuzzifier == null) throw new IllegalStateException("No defuzzifier");
 
-        //fuzzification
+
         lastFuzzifiedInputs = fuzzifyInputs(crispInputs);
 
-        //inference
+
         lastAggregatedOutput = inferenceEngine.inferAndAggregate(
                 lastFuzzifiedInputs,
                 ruleBase,
@@ -48,7 +48,7 @@ public class FuzzySystem {
                 orOperator
         );
 
-        //defuzzification
+
         double minRange = (output != null) ? output.getMinRange() : 0;
         double maxRange = (output != null) ? output.getMaxRange() : 100;
 

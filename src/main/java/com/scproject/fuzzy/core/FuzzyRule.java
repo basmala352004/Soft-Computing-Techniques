@@ -6,11 +6,11 @@ import java.util.*;
 
 
 public class FuzzyRule {
-    private Map<String, String> antecedents;      // variable → fuzzy set name
-    private String consequentVariable;            // Output variable name
-    private String consequentFuzzySet;            // Output fuzzy set name
-    private String operator;                      // "AND" or "OR"
-    private double weight;                        // Default: 1.0
+    private Map<String, String> antecedents;
+    private String consequentVariable;
+    private String consequentFuzzySet;
+    private String operator;
+    private double weight;
     private boolean enabled;
     private boolean isSugenoRule;
     private Double sugenoOutputValue;

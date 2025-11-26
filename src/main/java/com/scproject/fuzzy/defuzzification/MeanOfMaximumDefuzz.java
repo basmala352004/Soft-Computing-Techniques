@@ -11,7 +11,7 @@ public class MeanOfMaximumDefuzz implements DefuzzificationMethod {
 
     public MeanOfMaximumDefuzz() {
         this.steps = 1000;
-        this.tolerance = 0.001; // Values within 0.001 of max are considered "at max"
+        this.tolerance = 0.001;
     }
 
 
@@ -39,7 +39,7 @@ public class MeanOfMaximumDefuzz implements DefuzzificationMethod {
 
         double stepSize = (maxRange - minRange) / steps;
 
-        // First pass: find the maximum membership value
+
         double maxMembership = 0.0;
         for (int i = 0; i <= steps; i++) {
             double x = minRange + i * stepSize;
@@ -49,12 +49,12 @@ public class MeanOfMaximumDefuzz implements DefuzzificationMethod {
             }
         }
 
-        // If no membership found, return midpoint
+
         if (maxMembership == 0.0 || Math.abs(maxMembership) < 1e-10) {
             return (minRange + maxRange) / 2.0;
         }
 
-        // Second pass: collect all x values where membership is at or near maximum
+
         double sumX = 0.0;
         int count = 0;
 

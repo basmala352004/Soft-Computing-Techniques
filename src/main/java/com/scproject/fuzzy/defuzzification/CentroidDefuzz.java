@@ -3,12 +3,12 @@ package com.scproject.fuzzy.defuzzification;
 import com.scproject.fuzzy.core.FuzzySet;
 
 
- //Formula: COG = ∫(x × μ(x) dx) / ∫(μ(x) dx)
+
 
 public class CentroidDefuzz implements DefuzzificationMethod {
 
 
-    //Used to approximate integrals for centroid defuzzification
+
     private int steps;
 
 
