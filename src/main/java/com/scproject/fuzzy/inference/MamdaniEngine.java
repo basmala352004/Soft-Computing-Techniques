@@ -11,16 +11,7 @@ import com.scproject.fuzzy.rulebase.RuleBase;
 
 import java.util.*;
 
-/**
- * Mamdani Fuzzy Inference Engine
- *
- * Implements the complete Mamdani inference process:
- * 1. Fuzzification (done externally)
- * 2. Rule Evaluation - calculate firing strength for each rule
- * 3. Implication - clip each consequent at its rule's firing strength
- * 4. Aggregation - combine all clipped consequents using MAX operation
- * 5. Defuzzification (done externally with the aggregated set)
- */
+
 public class MamdaniEngine implements InferenceEngine {
 
     private AggregationMethod aggregationMethod;
@@ -33,16 +24,7 @@ public class MamdaniEngine implements InferenceEngine {
         this.aggregationMethod = aggregationMethod;
     }
 
-    /**
-     * Performs Mamdani inference: evaluates rules, applies implication, and aggregates.
-     *
-     * @param fuzzifiedInputs Map of variable name → (fuzzy set name → membership degree)
-     * @param ruleBase Collection of fuzzy rules
-     * @param outputVariable The output linguistic variable
-     * @param andOperator Operator for AND (typically MIN)
-     * @param orOperator Operator for OR (typically MAX)
-     * @return Aggregated fuzzy set ready for defuzzification
-     */
+
     @Override
     public FuzzySet inferAndAggregate(
             Map<String, Map<String, Double>> fuzzifiedInputs,
@@ -51,7 +33,7 @@ public class MamdaniEngine implements InferenceEngine {
             FuzzyOperator andOperator,
             FuzzyOperator orOperator) {
 
-        // Step 1: Evaluate all rules to get firing strengths
+
         Map<FuzzyRule, Double> ruleStrengths = evaluateRules(
                 fuzzifiedInputs,
                 ruleBase,
@@ -59,19 +41,17 @@ public class MamdaniEngine implements InferenceEngine {
                 orOperator
         );
 
-        // Step 2: Apply implication - clip each consequent at its firing strength
+
         List<FuzzySet> clippedConsequents = applyImplication(
                 ruleStrengths,
                 outputVariable
         );
 
-        // Step 3: Aggregate all clipped consequents using MAX operation
+
         return aggregationMethod.aggregate(clippedConsequents);
     }
 
-    /**
-     * Evaluates all active rules to calculate their firing strengths.
-     */
+
     private Map<FuzzyRule, Double> evaluateRules(
             Map<String, Map<String, Double>> fuzzifiedInputs,
             RuleBase ruleBase,
@@ -87,7 +67,7 @@ public class MamdaniEngine implements InferenceEngine {
                     orOperator
             );
 
-            // Apply rule weight
+
             strength *= rule.getWeight();
 
             ruleStrengths.put(rule, strength);
@@ -96,10 +76,7 @@ public class MamdaniEngine implements InferenceEngine {
         return ruleStrengths;
     }
 
-    /**
-     * Applies implication by clipping each consequent at its rule's firing strength.
-     * This implements the "alpha-cut" or "clipping" method from the lectures.
-     */
+
     private List<FuzzySet> applyImplication(
             Map<FuzzyRule, Double> ruleStrengths,
             FuzzyVariable outputVariable) {
@@ -110,7 +87,7 @@ public class MamdaniEngine implements InferenceEngine {
             FuzzyRule rule = entry.getKey();
             double firingStrength = entry.getValue();
 
-            // Get the consequent fuzzy set from the output variable
+
             String consequentName = rule.getConsequentFuzzySet();
             FuzzySet originalConsequent = outputVariable.getFuzzySets().get(consequentName);
 
@@ -120,7 +97,7 @@ public class MamdaniEngine implements InferenceEngine {
                 );
             }
 
-            // Clip the consequent at the firing strength (alpha-cut)
+
             FuzzySet clipped = clipAtAlpha(originalConsequent, firingStrength);
             clippedSets.add(clipped);
         }
@@ -128,10 +105,7 @@ public class MamdaniEngine implements InferenceEngine {
         return clippedSets;
     }
 
-    /**
-     * Clips a fuzzy set at the given alpha level.
-     * Returns a new fuzzy set where membership is min(original_membership, alpha).
-     */
+
     private FuzzySet clipAtAlpha(FuzzySet originalSet, double alpha) {
         MembershipFunction originalMF = originalSet.getMembershipFunction();
 

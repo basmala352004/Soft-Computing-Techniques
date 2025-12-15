@@ -1,0 +1,544 @@
+Index: src/main/java/com/scproject/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject;\r\n\r\nimport com.scproject.chromosome.IntegerChromosome;\r\nimport com.scproject.core.GeneticAlgorithm;\r\nimport com.scproject.core.GAConfiguration;\r\nimport com.scproject.crossover.TwoPointsMethod;\r\nimport com.scproject.crossover.UniformMethod;\r\nimport com.scproject.fitness.RoutingFitnessFunction;\r\nimport com.scproject.constraint.RoutingConstraintHandler;\r\nimport com.scproject.selection.rankSelection;\r\nimport com.scproject.crossover.OrderMethod;\r\nimport com.scproject.mutation.*;\r\n\r\nimport com.scproject.replacement.ElitistReplacement;\r\nimport com.scproject.chromosome.Chromosome;\r\n\r\nimport java.util.*;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n        // -------------------------\r\n        // 1) Define towers & graph\r\n        // -------------------------\r\n        // Example: 6 towers (0..5)\r\n        int nTowers = 6;\r\n\r\n        Set<Integer> towerIds = new HashSet<>();\r\n        for (int i = 0; i < nTowers; i++) towerIds.add(i);\r\n\r\n        // Connections: undirected example graph\r\n        Map<Integer, Set<Integer>> connections = new HashMap<>();\r\n        for (int i = 0; i < nTowers; i++) connections.put(i, new HashSet<>());\r\n\r\n        // define some links (symmetric)\r\n        connect(connections, 0, 1);\r\n        connect(connections, 0, 2);\r\n        connect(connections, 1, 2);\r\n        connect(connections, 1, 3);\r\n        connect(connections, 2, 4);\r\n        connect(connections, 3, 4);\r\n        connect(connections, 3, 5);\r\n        connect(connections, 4, 5);\r\n\r\n        // Tower load (0.0 = empty, 1.0 = full). Prefer low-load towers.\r\n        Map<Integer, Double> towerLoad = new HashMap<>();\r\n        towerLoad.put(0, 0.2);\r\n        towerLoad.put(1, 0.5);\r\n        towerLoad.put(2, 0.1);\r\n        towerLoad.put(3, 0.6);\r\n        towerLoad.put(4, 0.3);\r\n        towerLoad.put(5, 0.4);\r\n\r\n        // -------------------------\r\n        // 2) Prepare GA components\r\n        // -------------------------\r\n        GAConfiguration config = new GAConfiguration();\r\n        config.setPopulationSize(8);\r\n        config.setGenerations(120);\r\n        config.setChromosomeLength(nTowers);\r\n        config.setNumberOfParents(40);\r\n        config.setCrossoverRate(0.9);\r\n        config.setMutationRate(0.2);\r\n        config.setVerbose(true);\r\n        config.setPrintFrequency(10);\r\n\r\n        IntegerChromosome chromosome = new IntegerChromosome(nTowers);\r\n        config.setChromosomePrototype(chromosome);\r\n\r\n        // selection, crossover, mutation, replacement\r\n        config.setSelectionStrategy(new rankSelection());   // or new com.scproject.selection.rouletteStrategy()\r\n        config.setCrossoverStrategy(new TwoPointsMethod() );\r\n        SwapMutation swapMutation = new SwapMutation();\r\n        swapMutation.setMutationRate(0.2);\r\n        InversionMutation inversionMutation = new InversionMutation();\r\n        inversionMutation.setMutationRate(0.2);\r\n        config.setMutationStrategy( inversionMutation);\r\n        ElitistReplacement replacement = new ElitistReplacement();\r\n        replacement.setEliteCount(2);\r\n        config.setReplacementStrategy(replacement);\r\n\r\n        // -------------------------\r\n        // 3) Fitness + Constraints\r\n        // -------------------------\r\n        RoutingFitnessFunction fitnessFunction = new RoutingFitnessFunction(connections, towerLoad);\r\n        RoutingConstraintHandler constraintHandler = new RoutingConstraintHandler(towerIds, connections);\r\n\r\n        // -------------------------\r\n        // 4) Build GA and run\r\n        // -------------------------\r\n        GeneticAlgorithm ga = new GeneticAlgorithm(config);\r\n        ga.setFitnessFunction(fitnessFunction);\r\n        ga.setConstraintHandler(constraintHandler);\r\n\r\n        // set strategies into GA (optional convenience setters)\r\n        ga.setSelectionStrategy(config.getSelectionStrategy());\r\n        ga.setCrossoverStrategy(config.getCrossoverStrategy());\r\n        ga.setMutationStrategy(config.getMutationStrategy());\r\n        ga.setReplacementStrategy(config.getReplacementStrategy());\r\n        ga.setChromosomePrototype(config.getChromosomePrototype());\r\n        ga.setVerbose(config.isVerbose());\r\n        ga.setPrintFrequency(config.getPrintFrequency());\r\n\r\n        System.out.println(\"Starting GA for Routing (towers = \" + nTowers + \") ...\");\r\n        ga.run();\r\n\r\n        System.out.println(\"Done. Best fitness: \" + ga.getBestFitness());\r\n        Chromosome best = ga.getBestSolution();\r\n        System.out.println(\"Best route: \" + best);\r\n    }\r\n\r\n    private static void connect(Map<Integer, Set<Integer>> m, int a, int b) {\r\n        m.get(a).add(b);\r\n        m.get(b).add(a);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/com/scproject/Main.java b/src/main/java/com/scproject/Main.java
+--- a/src/main/java/com/scproject/Main.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/Main.java	(date 1761243791829)
+@@ -22,33 +22,74 @@
+         // 1) Define towers & graph
+         // -------------------------
+         // Example: 6 towers (0..5)
+-        int nTowers = 6;
+-
++//        int nTowers = 6;
++//
++//        Set<Integer> towerIds = new HashSet<>();
++//        for (int i = 0; i < nTowers; i++) towerIds.add(i);
++//
++//        // Connections: undirected example graph
++//        Map<Integer, Set<Integer>> connections = new HashMap<>();
++//        for (int i = 0; i < nTowers; i++) connections.put(i, new HashSet<>());
++//
++//        // define some links (symmetric)
++//        connect(connections, 0, 0);
++//        connect(connections, 0, 1);
++//        connect(connections, 0, 2);
++//        connect(connections, 1, 2);
++//        connect(connections, 1, 3);
++//        connect(connections, 2, 4);
++//        connect(connections, 3, 4);
++//        connect(connections, 3, 5);
++//        connect(connections, 4, 5);
++//
++//        // Tower load (0.0 = empty, 1.0 = full). Prefer low-load towers.
++//        Map<Integer, Double> towerLoad = new HashMap<>();
++//        towerLoad.put(0, 0.2);
++//        towerLoad.put(1, 0.5);
++//        towerLoad.put(2, 0.1);
++//        towerLoad.put(3, 0.6);
++//        towerLoad.put(4, 0.3);
++//        towerLoad.put(5, 0.4);
++        int nTowers = 10;
+         Set<Integer> towerIds = new HashSet<>();
+         for (int i = 0; i < nTowers; i++) towerIds.add(i);
+ 
+-        // Connections: undirected example graph
++
+         Map<Integer, Set<Integer>> connections = new HashMap<>();
+         for (int i = 0; i < nTowers; i++) connections.put(i, new HashSet<>());
+ 
+-        // define some links (symmetric)
++
++
++       // connect(connections, 0, 0);
+         connect(connections, 0, 1);
+-        connect(connections, 0, 2);
+         connect(connections, 1, 2);
+-        connect(connections, 1, 3);
+-        connect(connections, 2, 4);
++        connect(connections, 2, 3);
+         connect(connections, 3, 4);
+-        connect(connections, 3, 5);
+-        connect(connections, 4, 5);
++
++
++        connect(connections, 5, 6);
++        connect(connections, 6, 7);
++        connect(connections, 7, 8);
++        connect(connections, 8, 9);
++
+ 
+-        // Tower load (0.0 = empty, 1.0 = full). Prefer low-load towers.
++        connect(connections, 2, 7);
++
++
++        connect(connections, 4, 9);
++
++
+         Map<Integer, Double> towerLoad = new HashMap<>();
+-        towerLoad.put(0, 0.2);
+-        towerLoad.put(1, 0.5);
+-        towerLoad.put(2, 0.1);
+-        towerLoad.put(3, 0.6);
+-        towerLoad.put(4, 0.3);
+-        towerLoad.put(5, 0.4);
++        towerLoad.put(0, 0.95);
++        towerLoad.put(1, 0.90);
++        towerLoad.put(2, 0.85);
++        towerLoad.put(3, 0.80);
++        towerLoad.put(4, 0.75);
++        towerLoad.put(5, 0.70);
++        towerLoad.put(6, 0.65);
++        towerLoad.put(7, 0.60);
++        towerLoad.put(8, 0.55);
++        towerLoad.put(9, 0.10);
+ 
+         // -------------------------
+         // 2) Prepare GA components
+@@ -61,7 +102,7 @@
+         config.setCrossoverRate(0.9);
+         config.setMutationRate(0.2);
+         config.setVerbose(true);
+-        config.setPrintFrequency(10);
++        //config.setPrintFrequency(10);
+ 
+         IntegerChromosome chromosome = new IntegerChromosome(nTowers);
+         config.setChromosomePrototype(chromosome);
+@@ -112,4 +153,4 @@
+         m.get(a).add(b);
+         m.get(b).add(a);
+     }
+-}
++}
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"20f98030-9143-4f85-a699-822a13e3017f\" name=\"Changes\" comment=\"\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/com/scproject/chromosome/RoutingChromosome.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/scproject/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/scproject/Main.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;AmiraEmad-04&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\r\n  \"selectedUrlAndAccountId\": {\r\n    \"url\": \"https://github.com/basmala352004/Soft-Computing-Techniques.git\",\r\n    \"accountId\": \"3b21c0b6-7054-460c-a15c-a8fe1e7ba146\"\r\n  }\r\n}]]></component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"34SVOqGB4ygGnt2JaVkvfW0ZD0o\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.Main.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/Soft-Computing-Techniques&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration default=\"true\" type=\"PythonConfigurationType\" factoryName=\"Python\">\r\n      <module name=\"Soft-Computing-Techniques\" />\r\n      <option name=\"ENV_FILES\" value=\"\" />\r\n      <option name=\"INTERPRETER_OPTIONS\" value=\"\" />\r\n      <option name=\"PARENT_ENVS\" value=\"true\" />\r\n      <envs>\r\n        <env name=\"PYTHONUNBUFFERED\" value=\"1\" />\r\n      </envs>\r\n      <option name=\"SDK_HOME\" value=\"\" />\r\n      <option name=\"WORKING_DIRECTORY\" value=\"\" />\r\n      <option name=\"IS_MODULE_SDK\" value=\"false\" />\r\n      <option name=\"ADD_CONTENT_ROOTS\" value=\"true\" />\r\n      <option name=\"ADD_SOURCE_ROOTS\" value=\"true\" />\r\n      <option name=\"SCRIPT_NAME\" value=\"\" />\r\n      <option name=\"PARAMETERS\" value=\"\" />\r\n      <option name=\"SHOW_COMMAND_LINE\" value=\"false\" />\r\n      <option name=\"EMULATE_TERMINAL\" value=\"false\" />\r\n      <option name=\"MODULE_MODE\" value=\"false\" />\r\n      <option name=\"REDIRECT_INPUT\" value=\"false\" />\r\n      <option name=\"INPUT_FILE\" value=\"\" />\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.scproject.Main\" />\r\n      <module name=\"SCProject\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"com.scproject.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration default=\"true\" type=\"JetRunConfigurationType\">\r\n      <module name=\"Soft-Computing-Techniques\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.Main\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"20f98030-9143-4f85-a699-822a13e3017f\" name=\"Changes\" comment=\"\" />\r\n      <created>1761206931973</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1761206931973</updated>\r\n      <workItem from=\"1761206932614\" duration=\"101000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/.idea/workspace.xml	(date 1761244768412)
+@@ -4,11 +4,15 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/RoutingChromosome.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="Study Case">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/Main.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/BinaryChromosome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/BinaryChromosome.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/FPChromosome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/FPChromosome.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/IntegerChromosome.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/chromosome/IntegerChromosome.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/constraint/RoutingConstraintHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/constraint/RoutingConstraintHandler.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/core/GAConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/core/GAConfiguration.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/com/scproject/fitness/RoutingFitnessFunction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/scproject/fitness/RoutingFitnessFunction.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -31,12 +35,12 @@
+     &quot;assignee&quot;: &quot;AmiraEmad-04&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/basmala352004/Soft-Computing-Techniques.git",
+-    "accountId": "3b21c0b6-7054-460c-a15c-a8fe1e7ba146"
+-  }
+-}]]></component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/basmala352004/Soft-Computing-Techniques.git&quot;,
++    &quot;accountId&quot;: &quot;3b21c0b6-7054-460c-a15c-a8fe1e7ba146&quot;
++  }
++}</component>
+   <component name="ProjectColorInfo">{
+   &quot;customColor&quot;: &quot;&quot;,
+   &quot;associatedIndex&quot;: 1
+@@ -50,6 +54,7 @@
+   &quot;keyToString&quot;: {
+     &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+     &quot;last_opened_file_path&quot;: &quot;D:/Soft-Computing-Techniques&quot;,
+@@ -116,9 +121,22 @@
+       <updated>1761206931973</updated>
+       <workItem from="1761206932614" duration="101000" />
+     </task>
++    <task id="LOCAL-00001" summary="Study Case">
++      <option name="closed" value="true" />
++      <created>1761215214464</created>
++      <option name="number" value="00001" />
++      <option name="presentableId" value="LOCAL-00001" />
++      <option name="project" value="LOCAL" />
++      <updated>1761215214464</updated>
++    </task>
++    <option name="localTasksCounter" value="2" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+     <option name="version" value="3" />
+   </component>
++  <component name="VcsManagerConfiguration">
++    <MESSAGE value="Study Case" />
++    <option name="LAST_COMMIT_MESSAGE" value="Study Case" />
++  </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/com/scproject/chromosome/FPChromosome.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject.chromosome;\r\n\r\nimport java.util.Random;\r\n\r\n\r\npublic class FPChromosome extends Chromosome {\r\n    private Double[] genes;\r\n    private double lowerBound;\r\n    private double upperBound;\r\n\r\n\r\n    public FPChromosome(int length) {\r\n        this(length, 0.0, 1.0);\r\n    }\r\n\r\n    public FPChromosome(int length, double lowerBound, double upperBound) {\r\n        super(length);\r\n        this.lowerBound = lowerBound;\r\n        this.upperBound = upperBound;\r\n        genes = new Double[length];\r\n    }\r\n\r\n    @Override\r\n    public void initialize() {\r\n        Random random = new Random();\r\n        for (int i = 0; i < length; i++) {\r\n            genes[i] = lowerBound + (upperBound - lowerBound) * random.nextDouble();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Object getGene(int index) {\r\n        return genes[index];\r\n    }\r\n\r\n    @Override\r\n    public void setGene(int index, Object value) {\r\n        genes[index] = ((Number) value).doubleValue();\r\n    }\r\n\r\n    @Override\r\n    public Object[] getGenes() {\r\n        return genes;\r\n    }\r\n\r\n    @Override\r\n    public void setGenes(Object[] genes) {\r\n        this.genes = new Double[genes.length];\r\n        for (int i = 0; i < genes.length; i++) {\r\n            this.genes[i] = ((Number) genes[i]).doubleValue();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Chromosome createNew(int length) {\r\n        return new FPChromosome(length, lowerBound, upperBound);\r\n    }\r\n\r\n    @Override\r\n    public Chromosome clone() {\r\n        FPChromosome copy = new FPChromosome(length, lowerBound, upperBound);\r\n        copy.setGenes(this.getGenes().clone());\r\n        copy.setFitness(this.getFitness());\r\n        copy.setEvaluated(this.isEvaluated());\r\n        return copy;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        StringBuilder sb = new StringBuilder(\"[\");\r\n        for (Double g : genes) {\r\n            sb.append(String.format(\"%.4f \", g));\r\n        }\r\n        sb.append(\"]\");\r\n        return sb.toString();\r\n    }\r\n\r\n    // Additional accessors\r\n    public double getLowerBound() {\r\n        return lowerBound;\r\n    }\r\n\r\n    public double getUpperBound() {\r\n        return upperBound;\r\n    }\r\n\r\n    public void setBounds(double lower, double upper) {\r\n        this.lowerBound = lower;\r\n        this.upperBound = upper;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/com/scproject/chromosome/FPChromosome.java b/src/main/java/com/scproject/chromosome/FPChromosome.java
+--- a/src/main/java/com/scproject/chromosome/FPChromosome.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/chromosome/FPChromosome.java	(date 1761244030458)
+@@ -1,5 +1,6 @@
+ package com.scproject.chromosome;
+ 
++import java.util.Arrays;
+ import java.util.Random;
+ 
+ 
+@@ -15,11 +16,15 @@
+ 
+     public FPChromosome(int length, double lowerBound, double upperBound) {
+         super(length);
++        if (lowerBound >= upperBound) {
++            throw new IllegalArgumentException("lowerBound must be < upperBound");
++        }
+         this.lowerBound = lowerBound;
+         this.upperBound = upperBound;
+         genes = new Double[length];
+     }
+ 
++
+     @Override
+     public void initialize() {
+         Random random = new Random();
+@@ -59,7 +64,7 @@
+     @Override
+     public Chromosome clone() {
+         FPChromosome copy = new FPChromosome(length, lowerBound, upperBound);
+-        copy.setGenes(this.getGenes().clone());
++        copy.genes = Arrays.copyOf(this.genes, this.genes.length);
+         copy.setFitness(this.getFitness());
+         copy.setEvaluated(this.isEvaluated());
+         return copy;
+Index: src/main/java/com/scproject/core/GAConfiguration.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject.core;\r\n\r\nimport com.scproject.chromosome.Chromosome;\r\nimport com.scproject.crossover.CrossoverStrategy;\r\nimport com.scproject.mutation.MutationStrategy;\r\nimport com.scproject.replacement.ReplacementStrategy;\r\nimport com.scproject.selection.SelectionStrategy;\r\nimport  com.scproject.selection.*;\r\nimport  com.scproject.crossover.*;\r\nimport  com.scproject.mutation.*;\r\nimport  com.scproject.replacement.*;\r\n\r\n\r\npublic class GAConfiguration {\r\n    private int populationSize;\r\n    private int generations;\r\n    private int chromosomeLength;\r\n    private int numberOfParents;\r\n    private double crossoverRate;\r\n    private double mutationRate;\r\n    private boolean verbose;\r\n    private int printFrequency;\r\n\r\n    private Chromosome chromosomePrototype;\r\n    private SelectionStrategy selectionStrategy;\r\n    private CrossoverStrategy crossoverStrategy;\r\n    private MutationStrategy mutationStrategy;\r\n    private ReplacementStrategy replacementStrategy;\r\n\r\n    public GAConfiguration() {\r\n        setDefaultValues();\r\n    }\r\n\r\n    // for testing purposes\r\n    private void setDefaultValues() {\r\n        this.populationSize = 100;\r\n        this.generations = 100;\r\n        this.chromosomeLength = 10;\r\n        this.numberOfParents = 50;\r\n        this.crossoverRate = 0.8;\r\n        this.mutationRate = 0.01;\r\n        this.verbose = true;\r\n        this.printFrequency = 10;\r\n\r\n        // uncomment when implemented\r\n        this.selectionStrategy = new rankSelection();\r\n        // this.crossoverStrategy = new SinglePointCrossover();\r\n        // this.mutationStrategy = null; // Will be set based on chromosome type\r\n        this.replacementStrategy = new ElitistReplacement();\r\n        this.replacementStrategy.setEliteCount(2);\r\n    }\r\n\r\n    public void validate() {\r\n        if (populationSize <= 0) {\r\n            throw new IllegalArgumentException(\"Population size must be positive\");\r\n        }\r\n        if (generations <= 0) {\r\n            throw new IllegalArgumentException(\"Number of generations must be positive\");\r\n        }\r\n        if (chromosomeLength <= 0) {\r\n            throw new IllegalArgumentException(\"Chromosome length must be positive\");\r\n        }\r\n        if (numberOfParents <= 0 || numberOfParents > populationSize) {\r\n            throw new IllegalArgumentException(\"Number of parents must be between 1 and population size\");\r\n        }\r\n        if (crossoverRate < 0 || crossoverRate > 1) {\r\n            throw new IllegalArgumentException(\"Crossover rate must be between 0 and 1\");\r\n        }\r\n        if (mutationRate < 0 || mutationRate > 1) {\r\n            throw new IllegalArgumentException(\"Mutation rate must be between 0 and 1\");\r\n        }\r\n        if (printFrequency <= 0) {\r\n            throw new IllegalArgumentException(\"Print frequency must be positive\");\r\n        }\r\n    }\r\n\r\n    // Getters\r\n    public int getPopulationSize() {\r\n        return populationSize;\r\n    }\r\n\r\n    public int getGenerations() {\r\n        return generations;\r\n    }\r\n\r\n    public int getChromosomeLength() {\r\n        return chromosomeLength;\r\n    }\r\n\r\n    public int getNumberOfParents() {\r\n        return numberOfParents;\r\n    }\r\n\r\n    public double getCrossoverRate() {\r\n        return crossoverRate;\r\n    }\r\n\r\n    public double getMutationRate() {\r\n        return mutationRate;\r\n    }\r\n\r\n    public boolean isVerbose() {\r\n        return verbose;\r\n    }\r\n\r\n    public int getPrintFrequency() {\r\n        return printFrequency;\r\n    }\r\n\r\n    public Chromosome getChromosomePrototype() {\r\n        return chromosomePrototype;\r\n    }\r\n\r\n    public SelectionStrategy getSelectionStrategy() {\r\n        return selectionStrategy;\r\n    }\r\n\r\n    public CrossoverStrategy getCrossoverStrategy() {\r\n        return crossoverStrategy;\r\n    }\r\n\r\n    public MutationStrategy getMutationStrategy() {\r\n        return mutationStrategy;\r\n    }\r\n\r\n    public ReplacementStrategy getReplacementStrategy() {\r\n        return replacementStrategy;\r\n    }\r\n\r\n    // Setters\r\n    public void setPopulationSize(int populationSize) {\r\n        if (populationSize <= 0) {\r\n            throw new IllegalArgumentException(\"Population size must be positive\");\r\n        }\r\n        this.populationSize = populationSize;\r\n    }\r\n\r\n    public void setGenerations(int generations) {\r\n        if (generations <= 0) {\r\n            throw new IllegalArgumentException(\"Number of generations must be positive\");\r\n        }\r\n        this.generations = generations;\r\n    }\r\n\r\n    public void setChromosomeLength(int chromosomeLength) {\r\n        if (chromosomeLength <= 0) {\r\n            throw new IllegalArgumentException(\"Chromosome length must be positive\");\r\n        }\r\n        this.chromosomeLength = chromosomeLength;\r\n    }\r\n\r\n    public void setNumberOfParents(int numberOfParents) {\r\n        if (numberOfParents <= 0) {\r\n            throw new IllegalArgumentException(\"Number of parents must be positive\");\r\n        }\r\n        this.numberOfParents = numberOfParents;\r\n    }\r\n\r\n    public void setCrossoverRate(double crossoverRate) {\r\n        if (crossoverRate < 0 || crossoverRate > 1) {\r\n            throw new IllegalArgumentException(\"Crossover rate must be between 0 and 1\");\r\n        }\r\n        this.crossoverRate = crossoverRate;\r\n    }\r\n\r\n    public void setMutationRate(double mutationRate) {\r\n        if (mutationRate < 0 || mutationRate > 1) {\r\n            throw new IllegalArgumentException(\"Mutation rate must be between 0 and 1\");\r\n        }\r\n        this.mutationRate = mutationRate;\r\n    }\r\n\r\n    public void setVerbose(boolean verbose) {\r\n        this.verbose = verbose;\r\n    }\r\n\r\n    public void setPrintFrequency(int printFrequency) {\r\n        if (printFrequency <= 0) {\r\n            throw new IllegalArgumentException(\"Print frequency must be positive\");\r\n        }\r\n        this.printFrequency = printFrequency;\r\n    }\r\n\r\n    public void setChromosomePrototype(Chromosome chromosomePrototype) {\r\n        this.chromosomePrototype = chromosomePrototype;\r\n    }\r\n\r\n    public void setSelectionStrategy(SelectionStrategy selectionStrategy) {\r\n        if (selectionStrategy == null) {\r\n            throw new IllegalArgumentException(\"Selection strategy cannot be null\");\r\n        }\r\n        this.selectionStrategy = selectionStrategy;\r\n    }\r\n\r\n    public void setCrossoverStrategy(CrossoverStrategy crossoverStrategy) {\r\n        if (crossoverStrategy == null) {\r\n            throw new IllegalArgumentException(\"Crossover strategy cannot be null\");\r\n        }\r\n        this.crossoverStrategy = crossoverStrategy;\r\n    }\r\n\r\n    public void setMutationStrategy(MutationStrategy mutationStrategy) {\r\n        if (mutationStrategy == null) {\r\n            throw new IllegalArgumentException(\"Mutation strategy cannot be null\");\r\n        }\r\n        this.mutationStrategy = mutationStrategy;\r\n    }\r\n\r\n    public void setReplacementStrategy(ReplacementStrategy replacementStrategy) {\r\n        if (replacementStrategy == null) {\r\n            throw new IllegalArgumentException(\"Replacement strategy cannot be null\");\r\n        }\r\n        this.replacementStrategy = replacementStrategy;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        return \"GAConfiguration{\" +\r\n                \"populationSize=\" + populationSize +\r\n                \", generations=\" + generations +\r\n                \", chromosomeLength=\" + chromosomeLength +\r\n                \", numberOfParents=\" + numberOfParents +\r\n                \", crossoverRate=\" + crossoverRate +\r\n                \", mutationRate=\" + mutationRate +\r\n                \", selectionStrategy=\" + selectionStrategy.getClass().getSimpleName() +\r\n                \", crossoverStrategy=\" + crossoverStrategy.getClass().getSimpleName() +\r\n                \", mutationStrategy=\" + (mutationStrategy != null ? mutationStrategy.getClass().getSimpleName() : \"null\") +\r\n                \", replacementStrategy=\" + replacementStrategy.getClass().getSimpleName() +\r\n                '}';\r\n    }\r\n\r\n    public GAConfiguration copy() {\r\n        GAConfiguration copy = new GAConfiguration();\r\n        copy.populationSize = this.populationSize;\r\n        copy.generations = this.generations;\r\n        copy.chromosomeLength = this.chromosomeLength;\r\n        copy.numberOfParents = this.numberOfParents;\r\n        copy.crossoverRate = this.crossoverRate;\r\n        copy.mutationRate = this.mutationRate;\r\n        copy.verbose = this.verbose;\r\n        copy.printFrequency = this.printFrequency;\r\n        copy.chromosomePrototype = this.chromosomePrototype;\r\n        copy.selectionStrategy = this.selectionStrategy;\r\n        copy.crossoverStrategy = this.crossoverStrategy;\r\n        copy.mutationStrategy = this.mutationStrategy;\r\n        copy.replacementStrategy = this.replacementStrategy;\r\n        return copy;\r\n    }\r\n}
+===================================================================
+diff --git a/src/main/java/com/scproject/core/GAConfiguration.java b/src/main/java/com/scproject/core/GAConfiguration.java
+--- a/src/main/java/com/scproject/core/GAConfiguration.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/core/GAConfiguration.java	(date 1761244650053)
+@@ -44,6 +44,7 @@
+ 
+         // uncomment when implemented
+         this.selectionStrategy = new rankSelection();
++
+         // this.crossoverStrategy = new SinglePointCrossover();
+         // this.mutationStrategy = null; // Will be set based on chromosome type
+         this.replacementStrategy = new ElitistReplacement();
+Index: src/main/java/com/scproject/chromosome/BinaryChromosome.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject.chromosome;\r\n\r\nimport java.util.*;\r\n\r\npublic class BinaryChromosome extends Chromosome {\r\n    private Boolean[] genes;\r\n\r\n    public BinaryChromosome(int length) {\r\n        super(length);\r\n        genes = new Boolean[length];\r\n    }\r\n\r\n    @Override\r\n    public void initialize() {\r\n        Random random = new Random();\r\n        for (int i = 0; i < length; i++) {\r\n            genes[i] = random.nextBoolean();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Object getGene(int index) {\r\n        return genes[index];\r\n    }\r\n\r\n    @Override\r\n    public void setGene(int index, Object value) {\r\n        genes[index] = (Boolean) value;\r\n    }\r\n\r\n    @Override\r\n    public Object[] getGenes() {\r\n        return genes;\r\n    }\r\n\r\n    @Override\r\n    public void setGenes(Object[] genes) {\r\n        this.genes = new Boolean[genes.length];\r\n        for (int i = 0; i < genes.length; i++) {\r\n            this.genes[i] = (Boolean) genes[i];\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Chromosome createNew(int length) {\r\n        return new BinaryChromosome(length);\r\n    }\r\n\r\n    @Override\r\n    public Chromosome clone() {\r\n        BinaryChromosome copy = new BinaryChromosome(length);\r\n        copy.setGenes(this.getGenes().clone());\r\n        copy.setFitness(this.getFitness());\r\n        copy.setEvaluated(this.isEvaluated());\r\n        return copy;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        StringBuilder sb = new StringBuilder();\r\n        for (Boolean b : genes) {\r\n            sb.append(b ? \"1\" : \"0\");\r\n        }\r\n        return sb.toString();\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/com/scproject/chromosome/BinaryChromosome.java b/src/main/java/com/scproject/chromosome/BinaryChromosome.java
+--- a/src/main/java/com/scproject/chromosome/BinaryChromosome.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/chromosome/BinaryChromosome.java	(date 1761243791813)
+@@ -47,9 +47,10 @@
+     }
+ 
+     @Override
++    // Line 51: Use Arrays.copyOf instead of clone()
+     public Chromosome clone() {
+         BinaryChromosome copy = new BinaryChromosome(length);
+-        copy.setGenes(this.getGenes().clone());
++        copy.genes = Arrays.copyOf(this.genes, this.genes.length);
+         copy.setFitness(this.getFitness());
+         copy.setEvaluated(this.isEvaluated());
+         return copy;
+Index: src/main/java/com/scproject/chromosome/IntegerChromosome.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject.chromosome;\r\n\r\nimport java.util.*;\r\nimport java.util.Random;\r\n\r\npublic class IntegerChromosome extends Chromosome {\r\n    private Integer[] genes;\r\n    private int lowerBound;\r\n    private int upperBound;\r\n\r\n    public IntegerChromosome(int length) {\r\n        this(length, 0, length-1);\r\n    }\r\n\r\n    public IntegerChromosome(int length, int lowerBound, int upperBound) {\r\n        super(length);\r\n        this.lowerBound = lowerBound;\r\n        this.upperBound = upperBound;\r\n        genes = new Integer[length];\r\n    }\r\n\r\n    @Override\r\n    public void initialize() {\r\n        Random random = new Random();\r\n        for (int i = 0; i < length; i++) {\r\n            genes[i] = i;\r\n        }\r\n        List<Integer> list = Arrays.asList(genes);\r\n        Collections.shuffle(list);\r\n        genes = list.toArray(new Integer[0]);\r\n\r\n        System.out.println(this.toString());\r\n\r\n    }\r\n\r\n    @Override\r\n    public Object getGene(int index) {\r\n        return genes[index];\r\n    }\r\n\r\n    @Override\r\n    public void setGene(int index, Object value) {\r\n        genes[index] = ((Number) value).intValue();\r\n    }\r\n\r\n    @Override\r\n    public Object[] getGenes() {\r\n        return genes;\r\n    }\r\n\r\n    @Override\r\n    public void setGenes(Object[] genes) {\r\n        this.genes = new Integer[genes.length];\r\n        for (int i = 0; i < genes.length; i++) {\r\n            this.genes[i] = ((Number) genes[i]).intValue();\r\n        }\r\n    }\r\n\r\n    @Override\r\n    public Chromosome createNew(int length) {\r\n        return new IntegerChromosome(length, lowerBound, upperBound);\r\n    }\r\n\r\n    @Override\r\n    public Chromosome clone() {\r\n        IntegerChromosome copy = new IntegerChromosome(length, lowerBound, upperBound);\r\n        copy.setGenes(this.getGenes().clone());\r\n        copy.setFitness(this.getFitness());\r\n        copy.setEvaluated(this.isEvaluated());\r\n        return copy;\r\n    }\r\n\r\n    @Override\r\n    public String toString() {\r\n        StringBuilder sb = new StringBuilder(\"[\");\r\n        for (Integer g : genes) {\r\n            sb.append(g).append(\" \");\r\n        }\r\n        sb.append(\"]\");\r\n        return sb.toString();\r\n    }\r\n\r\n    public int getLowerBound() {\r\n        return lowerBound;\r\n    }\r\n\r\n    public int getUpperBound() {\r\n        return upperBound;\r\n    }\r\n\r\n    public void setBounds(int lower, int upper) {\r\n        this.lowerBound = lower;\r\n        this.upperBound = upper;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/com/scproject/chromosome/IntegerChromosome.java b/src/main/java/com/scproject/chromosome/IntegerChromosome.java
+--- a/src/main/java/com/scproject/chromosome/IntegerChromosome.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/chromosome/IntegerChromosome.java	(date 1761244728857)
+@@ -29,7 +29,7 @@
+         Collections.shuffle(list);
+         genes = list.toArray(new Integer[0]);
+ 
+-        System.out.println(this.toString());
++        //System.out.println(this.toString());
+ 
+     }
+ 
+@@ -64,7 +64,7 @@
+     @Override
+     public Chromosome clone() {
+         IntegerChromosome copy = new IntegerChromosome(length, lowerBound, upperBound);
+-        copy.setGenes(this.getGenes().clone());
++        copy.genes = Arrays.copyOf(this.genes, this.genes.length);  // ✅ Direct copy
+         copy.setFitness(this.getFitness());
+         copy.setEvaluated(this.isEvaluated());
+         return copy;
+@@ -92,4 +92,4 @@
+         this.lowerBound = lower;
+         this.upperBound = upper;
+     }
+-}
++}
+\ No newline at end of file
+Index: src/main/java/com/scproject/fitness/RoutingFitnessFunction.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject.fitness;\r\n\r\nimport com.scproject.chromosome.Chromosome;\r\nimport com.scproject.chromosome.IntegerChromosome;\r\n\r\nimport java.util.Map;\r\nimport java.util.Set;\r\n\r\npublic class RoutingFitnessFunction implements FitnessFunction {\r\n\r\n    private final Map<Integer, Set<Integer>> towerConnections;\r\n    private final Map<Integer, Double> towerLoad;\r\n\r\n    public RoutingFitnessFunction(Map<Integer, Set<Integer>> towerConnections, Map<Integer, Double> towerLoad) {\r\n        this.towerConnections = towerConnections;\r\n        this.towerLoad = towerLoad;\r\n    }\r\n\r\n    @Override\r\n    public double evaluate(Chromosome chromosome) {\r\n        if (!(chromosome instanceof IntegerChromosome)) {\r\n            throw new IllegalArgumentException(\"RoutingFitnessFunction only supports IntegerChromosome\");\r\n        }\r\n\r\n        Integer[] route = (Integer[]) chromosome.getGenes();\r\n        double score = 0.0;\r\n\r\n        for (int i = 0; i < route.length - 1; i++) {\r\n            int from = route[i];\r\n            int to = route[i + 1];\r\n\r\n            if (towerConnections.getOrDefault(from, Set.of()).contains(to)) {\r\n                double loadPenalty = towerLoad.getOrDefault(to, 0.0);\r\n                score += (1.0 - loadPenalty); // Prefer low-load towers\r\n            }\r\n        }\r\n\r\n        // Bonus for shorter routes\r\n        score += (5.0 - route.length); // shorter = better\r\n\r\n        return score;\r\n    }\r\n}
+===================================================================
+diff --git a/src/main/java/com/scproject/fitness/RoutingFitnessFunction.java b/src/main/java/com/scproject/fitness/RoutingFitnessFunction.java
+--- a/src/main/java/com/scproject/fitness/RoutingFitnessFunction.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/fitness/RoutingFitnessFunction.java	(date 1761241909803)
+@@ -33,6 +33,7 @@
+                 double loadPenalty = towerLoad.getOrDefault(to, 0.0);
+                 score += (1.0 - loadPenalty); // Prefer low-load towers
+             }
++
+         }
+ 
+         // Bonus for shorter routes
+Index: src/main/java/com/scproject/constraint/RoutingConstraintHandler.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.scproject.constraint;\r\n\r\nimport com.scproject.chromosome.Chromosome;\r\nimport com.scproject.chromosome.IntegerChromosome;\r\n\r\nimport java.util.*;\r\n\r\npublic class RoutingConstraintHandler implements ConstraintHandler {\r\n\r\n    private final Set<Integer> validTowerIds;\r\n    private final Map<Integer, Set<Integer>> towerConnections;\r\n\r\n    public RoutingConstraintHandler(Set<Integer> validTowerIds, Map<Integer, Set<Integer>> towerConnections) {\r\n        this.validTowerIds = validTowerIds;\r\n        this.towerConnections = towerConnections;\r\n    }\r\n\r\n    @Override\r\n    public boolean isFeasible(Chromosome chromosome) {\r\n        if (!(chromosome instanceof IntegerChromosome)) return false;\r\n\r\n        Integer[] route = (Integer[]) chromosome.getGenes();\r\n        Set<Integer> visited = new HashSet<>();\r\n\r\n        for (int i = 0; i < route.length; i++) {\r\n            int current = route[i];\r\n\r\n            if (!validTowerIds.contains(current)) return false;\r\n            if (visited.contains(current)) return false;\r\n            visited.add(current);\r\n\r\n            if (i > 0) {\r\n                int prev = route[i - 1];\r\n                if (!towerConnections.getOrDefault(prev, Set.of()).contains(current)) return false;\r\n            }\r\n        }\r\n\r\n        return true;\r\n    }\r\n\r\n    @Override\r\n    public double adjustFitness(Chromosome chromosome, double originalFitness) {\r\n        return originalFitness * 0.5; // Penalize infeasible routes\r\n    }\r\n}
+===================================================================
+diff --git a/src/main/java/com/scproject/constraint/RoutingConstraintHandler.java b/src/main/java/com/scproject/constraint/RoutingConstraintHandler.java
+--- a/src/main/java/com/scproject/constraint/RoutingConstraintHandler.java	(revision f94f9a5c7c6451fa8d11f8759d9fa028a9ed3d9e)
++++ b/src/main/java/com/scproject/constraint/RoutingConstraintHandler.java	(date 1761243586773)
+@@ -9,6 +9,7 @@
+ 
+     private final Set<Integer> validTowerIds;
+     private final Map<Integer, Set<Integer>> towerConnections;
++    private final Random random = new Random();
+ 
+     public RoutingConstraintHandler(Set<Integer> validTowerIds, Map<Integer, Set<Integer>> towerConnections) {
+         this.validTowerIds = validTowerIds;
+@@ -25,13 +26,19 @@
+         for (int i = 0; i < route.length; i++) {
+             int current = route[i];
+ 
++            // Check if tower ID is valid
+             if (!validTowerIds.contains(current)) return false;
++
++            // Check for duplicate towers
+             if (visited.contains(current)) return false;
+             visited.add(current);
+ 
++            // Check connectivity (from previous tower)
+             if (i > 0) {
+                 int prev = route[i - 1];
+-                if (!towerConnections.getOrDefault(prev, Set.of()).contains(current)) return false;
++                if (!towerConnections.getOrDefault(prev, Collections.emptySet()).contains(current)) {
++                    return false;
++                }
+             }
+         }
+ 
+@@ -40,6 +47,182 @@
+ 
+     @Override
+     public double adjustFitness(Chromosome chromosome, double originalFitness) {
+-        return originalFitness * 0.5; // Penalize infeasible routes
++        // Strong penalty for infeasible routes
++        double violationDegree = getViolationMeasure(chromosome);
++        return originalFitness * (1.0 / (1.0 + violationDegree));
++    }
++
++    @Override
++    public double getViolationMeasure(Chromosome chromosome) {
++        if (!(chromosome instanceof IntegerChromosome)) return Double.MAX_VALUE;
++
++        Integer[] route = (Integer[]) chromosome.getGenes();
++        int violations = 0;
++        Set<Integer> visited = new HashSet<>();
++
++        for (int i = 0; i < route.length; i++) {
++            int current = route[i];
++
++            // Count invalid tower IDs
++            if (!validTowerIds.contains(current)) violations++;
++
++            // Count duplicates
++            if (visited.contains(current)) violations++;
++            visited.add(current);
++
++            // Count broken connections
++            if (i > 0) {
++                int prev = route[i - 1];
++                if (!towerConnections.getOrDefault(prev, Collections.emptySet()).contains(current)) {
++                    violations++;
++                }
++            }
++        }
++
++        return violations;
++    }
++
++    @Override
++    public boolean repair(Chromosome chromosome) {
++        if (!(chromosome instanceof IntegerChromosome)) return false;
++
++        Integer[] route = (Integer[]) chromosome.getGenes();
++
++        // Try to repair the route by building a valid path
++        Integer[] repairedRoute = buildValidPath(route);
++
++        if (repairedRoute != null) {
++            chromosome.setGenes(repairedRoute);
++            chromosome.resetEvaluation();
++            return true;
++        }
++
++        return false;
++    }
++
++    /**
++     * Build a valid path from a potentially invalid route.
++     * Strategy: Keep valid segments, reconnect broken parts using BFS/DFS.
++     */
++    private Integer[] buildValidPath(Integer[] route) {
++        List<Integer> validPath = new ArrayList<>();
++        Set<Integer> used = new HashSet<>();
++
++        // Start with first tower if valid
++        if (route.length == 0) return null;
++
++        int current = route[0];
++        if (!validTowerIds.contains(current)) {
++            // Pick a random valid starting point
++            current = validTowerIds.iterator().next();
++        }
++
++        validPath.add(current);
++        used.add(current);
++
++        // Try to build path greedily
++        for (int i = 1; i < route.length; i++) {
++            int next = route[i];
++
++            // Skip if already used
++            if (used.contains(next)) continue;
++
++            // Skip if not a valid tower
++            if (!validTowerIds.contains(next)) continue;
++
++            // Check if next is connected to current
++            Set<Integer> neighbors = towerConnections.getOrDefault(current, Collections.emptySet());
++
++            if (neighbors.contains(next)) {
++                // Direct connection exists - add it
++                validPath.add(next);
++                used.add(next);
++                current = next;
++            } else {
++                // No direct connection - find shortest path using BFS
++                Integer bridgeNode = findBridge(current, next, used);
++                if (bridgeNode != null && !used.contains(bridgeNode)) {
++                    validPath.add(bridgeNode);
++                    used.add(bridgeNode);
++                    current = bridgeNode;
++
++                    // Now check if we can add next
++                    if (towerConnections.getOrDefault(current, Collections.emptySet()).contains(next)) {
++                        validPath.add(next);
++                        used.add(next);
++                        current = next;
++                    }
++                }
++            }
++        }
++
++        // Fill remaining unused towers if needed
++        while (validPath.size() < route.length) {
++            Set<Integer> neighbors = towerConnections.getOrDefault(current, Collections.emptySet());
++            Integer nextTower = null;
++
++            for (Integer neighbor : neighbors) {
++                if (!used.contains(neighbor)) {
++                    nextTower = neighbor;
++                    break;
++                }
++            }
++
++            if (nextTower == null) {
++                // No more neighbors - try to find any unused connected tower
++                nextTower = findAnyUnusedConnectedTower(validPath, used);
++                if (nextTower == null) break; // Can't complete path
++            }
++
++            validPath.add(nextTower);
++            used.add(nextTower);
++            current = nextTower;
++        }
++
++        // Convert to array
++        Integer[] result = new Integer[validPath.size()];
++        return validPath.toArray(result);
++    }
++
++    /**
++     * Find a bridge tower that connects 'from' to 'to' (or gets closer).
++     */
++    private Integer findBridge(int from, int to, Set<Integer> used) {
++        Set<Integer> neighbors = towerConnections.getOrDefault(from, Collections.emptySet());
++
++        // First try: direct neighbors of 'from' that are also neighbors of 'to'
++        Set<Integer> toNeighbors = towerConnections.getOrDefault(to, Collections.emptySet());
++        for (Integer neighbor : neighbors) {
++            if (!used.contains(neighbor) && toNeighbors.contains(neighbor)) {
++                return neighbor;
++            }
++        }
++
++        // Second try: any unused neighbor of 'from'
++        for (Integer neighbor : neighbors) {
++            if (!used.contains(neighbor)) {
++                return neighbor;
++            }
++        }
++
++        return null;
++    }
++
++    /**
++     * Find any unused tower that can be connected to the current path.
++     */
++    private Integer findAnyUnusedConnectedTower(List<Integer> path, Set<Integer> used) {
++        // Try to connect from the last tower in the path
++        for (int i = path.size() - 1; i >= 0; i--) {
++            int current = path.get(i);
++            Set<Integer> neighbors = towerConnections.getOrDefault(current, Collections.emptySet());
++
++            for (Integer neighbor : neighbors) {
++                if (!used.contains(neighbor)) {
++                    return neighbor;
++                }
++            }
++        }
++        return null;
+     }
+ }
+\ No newline at end of file

@@ -219,7 +219,8 @@ public class RuleEditor {
         System.out.println("=".repeat(70));
     }
 
-    //for SUGENO
+
+
 
     public FuzzyRule createSugenoRule(
             Map<String, String> antecedents,

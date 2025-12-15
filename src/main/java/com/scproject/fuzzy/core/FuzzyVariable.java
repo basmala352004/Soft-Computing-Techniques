@@ -1,12 +1,13 @@
 package com.scproject.fuzzy.core;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class FuzzyVariable {
-    private String name;                          // e.g., "Temperature"
-    private double minRange;                      // Universe of discourse min
-    private double maxRange;                      // Universe of discourse max
-    private Map<String, FuzzySet> fuzzySets;      // e.g., "Cold", "Warm", "Hot"
+    private String name;
+    private double minRange;
+    private double maxRange;
+    private Map<String, FuzzySet> fuzzySets;
 
     public String getName() {
         return name;
@@ -40,8 +41,18 @@ public class FuzzyVariable {
         this.fuzzySets = fuzzySets;
     }
 
-    // Fuzzification: converts crisp value to membership degrees
-    public Map<String, Double> fuzzify(double crispValue){
-        return null;
+
+
+    public Map<String, Double> fuzzify(double crispValue) {
+        Map<String, Double> memberships = new HashMap<>();
+
+        for (String setName : fuzzySets.keySet()) {
+            FuzzySet set = fuzzySets.get(setName);
+            double µ = set.getMembership(crispValue);
+            memberships.put(setName, µ);
+        }
+
+        return memberships;
     }
 }
+

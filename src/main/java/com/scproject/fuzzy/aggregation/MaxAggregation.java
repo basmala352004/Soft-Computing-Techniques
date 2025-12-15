@@ -5,18 +5,13 @@ import com.scproject.fuzzy.membership.MembershipFunction;
 
 import java.util.*;
 
-/**
- * Max aggregation method (Union operation).
- * Combines multiple fuzzy sets by taking the maximum membership value
- * at each point in the universe of discourse.
- * This is the standard aggregation method used in Mamdani inference.
- */
+
 public class MaxAggregation implements AggregationMethod {
 
     @Override
     public FuzzySet aggregate(Collection<FuzzySet> sets) {
 
-        // Handle empty or null input
+
         if (sets == null || sets.isEmpty()) {
             return new FuzzySet("empty", new MembershipFunction() {
                 @Override
@@ -31,7 +26,8 @@ public class MaxAggregation implements AggregationMethod {
             });
         }
 
-        // Merge all defining points from all sets
+
+
         SortedSet<Double> mergedPoints = new TreeSet<>();
 
         for (FuzzySet fs : sets) {
@@ -41,12 +37,12 @@ public class MaxAggregation implements AggregationMethod {
             }
         }
 
-        // Convert to array for the aggregated membership function
+
         double[] definingPoints = mergedPoints.stream()
                 .mapToDouble(Double::doubleValue)
                 .toArray();
 
-        // Create aggregated membership function that takes MAX at each point
+
         MembershipFunction aggregatedMF = new MembershipFunction() {
 
             @Override

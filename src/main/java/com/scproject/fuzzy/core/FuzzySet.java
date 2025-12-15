@@ -23,10 +23,7 @@ public class FuzzySet {
         return membershipFunction.getMembership(x);
     }
 
-    /**
-     * Computes centroid (center of gravity) numerically.
-     * Uses defining points to determine domain.
-     */
+
     public double getCentroid() {
         double[] pts = membershipFunction.getDefiningPoints();
         if (pts == null || pts.length < 2)

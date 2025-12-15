@@ -9,5 +9,5 @@ public interface FuzzyOperator {
             result = apply(result, values[i]);
         }
         return result;
-    }  // For multiple antecedents
+    }
 }

@@ -41,7 +41,7 @@ public class WeightedAverageDefuzz implements DefuzzificationMethod {
             }
         }
 
-        // If no membership, return midpoint
+
         if (maxMembership == 0.0 || Math.abs(maxMembership) < 1e-10) {
             return (minRange + maxRange) / 2.0;
         }
@@ -72,7 +72,6 @@ public class WeightedAverageDefuzz implements DefuzzificationMethod {
         }
 
         if (denominator == 0 || Math.abs(denominator) < 1e-10) {
-            // Return average of centroids if weights sum to zero
             double sum = 0;
             for (double c : centroids) {
                 sum += c;
