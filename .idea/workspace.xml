@@ -4,7 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="Sugeno Inference Rule First  Commit" />
+    <list default="true" id="20f98030-9143-4f85-a699-822a13e3017f" name="Changes" comment="Sugeno Inference Rule First  Commit">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/BackpropagationExample.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/TestDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/activations/Activation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/activations/Linear.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/activations/ReLU.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/activations/Sigmoid.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/activations/Tanh.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/core/Layer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/core/Network.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/initializers/RandomUniform.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/initializers/WeightInitializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/initializers/XavierInitializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/loss/LossFunction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/loss/MSELoss.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/propagation/BackwardPropagation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/propagation/ForwardPropagation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/scproject/neural_network/propagation/PropagationCache.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,6 +32,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -29,9 +49,12 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/basmala352004/Soft-Computing-Techniques.git&quot;,
-    &quot;accountId&quot;: &quot;3b21c0b6-7054-460c-a15c-a8fe1e7ba146&quot;
+    &quot;accountId&quot;: &quot;ed3373a6-864c-4b32-b80a-847dcf32d470&quot;
   }
 }</component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -43,14 +66,19 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.BackpropagationExample.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.SugenoTest.executor": "Run",
+    "Application.TestDemo.executor": "Run",
     "Application.com.scproject.test.SugenoTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Soft-Computing-Techniques",
+    "last_opened_file_path": "C:/Users/Basmala Khalifa/IdeaProjects/Soft-Computing-Techniques",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -60,7 +88,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.SugenoTest">
+  <component name="RunManager" selected="Application.BackpropagationExample">
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <module name="Soft-Computing-Techniques" />
       <option name="ENV_FILES" value="" />
@@ -83,6 +111,19 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="BackpropagationExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.scproject.neural_network.BackpropagationExample" />
+      <module name="SCProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.scproject.neural_network.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.scproject.Main" />
       <module name="SCProject" />
@@ -102,6 +143,19 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.scproject.fuzzy.inference.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.scproject.neural_network.TestDemo" />
+      <module name="SCProject" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.scproject.neural_network.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -130,6 +184,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BackpropagationExample" />
+        <item itemvalue="Application.TestDemo" />
         <item itemvalue="Application.SugenoTest" />
         <item itemvalue="Application.com.scproject.test.SugenoTest" />
         <item itemvalue="Application.Main" />
@@ -154,7 +210,11 @@
       <updated>1761206931973</updated>
       <workItem from="1761206932614" duration="101000" />
       <workItem from="1764016665505" duration="4613000" />
-      <workItem from="1764021387903" duration="5473000" />
+      <workItem from="1764021387903" duration="5845000" />
+      <workItem from="1764186853568" duration="1024000" />
+      <workItem from="1764448638745" duration="3000" />
+      <workItem from="1764448676533" duration="1533000" />
+      <workItem from="1765824539229" duration="5614000" />
     </task>
     <task id="LOCAL-00001" summary="Sugeno Inference Rule First  Commit">
       <option name="closed" value="true" />
@@ -164,7 +224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764121986540</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Sugeno Inference Rule First  Commit">
+      <option name="closed" value="true" />
+      <created>1764122084250</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1764122084250</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -173,5 +241,9 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Sugeno Inference Rule First  Commit" />
     <option name="LAST_COMMIT_MESSAGE" value="Sugeno Inference Rule First  Commit" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+    <settings-migrated>true</settings-migrated>
   </component>
 </project>
