@@ -1,14 +1,13 @@
 package com.scproject.neural_network.initializers;
 
 /**
- * Xavier (Glorot) initialization
+ * He initialization (for ReLU networks)
  */
-public class XavierInitializer extends WeightInitializer {
+public class HeInitializer extends WeightInitializer {
     
     @Override
     public double[][] initialize(int inputSize, int outputSize) {
-        // Use the same formula as Python's Xavier initialization
-        double std = Math.sqrt(2.0 / (inputSize + outputSize));
+        double std = Math.sqrt(2.0 / inputSize);
         double[][] weights = new double[inputSize][outputSize];
         
         for (int i = 0; i < inputSize; i++) {

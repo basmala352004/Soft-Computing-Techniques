@@ -1,19 +1,33 @@
 package com.scproject.neural_network.activations;
 
-public class Sigmoid implements Activation {
-    @Override
-    public double forward(double z) {
-        return 1.0 / (1.0 + Math.exp(-z));
+/**
+ * Sigmoid activation function
+ */
+public class Sigmoid extends Activation {
+    
+    public Sigmoid() {
+        super("sigmoid", false);
     }
-
+    
     @Override
-    public double backward(double z) {
-        double s = forward(z);
-        return s * (1 - s);
+    public double[][] forward(double[][] x) {
+        double[][] result = new double[x.length][x[0].length];
+        for (int i = 0; i < x.length; i++) {
+            for (int j = 0; j < x[0].length; j++) {
+                result[i][j] = 1.0 / (1.0 + Math.exp(-x[i][j]));
+            }
+        }
+        return result;
     }
-
+    
     @Override
-    public String getName() {
-        return "Sigmoid";
+    public double[][] derivative(double[][] output) {
+        double[][] result = new double[output.length][output[0].length];
+        for (int i = 0; i < output.length; i++) {
+            for (int j = 0; j < output[0].length; j++) {
+                result[i][j] = output[i][j] * (1.0 - output[i][j]);
+            }
+        }
+        return result;
     }
 }

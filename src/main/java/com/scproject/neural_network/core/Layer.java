@@ -1,31 +1,44 @@
 package com.scproject.neural_network.core;
 
-import com.scproject.neural_network.activations.Activation;
-import com.scproject.neural_network.initializers.WeightInitializer;
-
-public class Layer {
-    private int inputSize;//number os inputs
-    private int outputSize;//number of outputs
-    private double[][] weights;//inputSize x outputSize
-    private double[][] bias;//1 x outputSize
-    private Activation activation;
-
-    public Layer(int inputSize, int outputSize, Activation activation, WeightInitializer initializer) {
-        this.inputSize = inputSize;
-        this.outputSize = outputSize;
-        this.activation = activation;
-        this.weights = initializer.initialize(inputSize, outputSize);
-        this.bias = new double[1][outputSize];
+/**
+ * Interface for neural network layers
+ */
+public interface Layer {
+    
+    /**
+     * Forward propagation through this layer
+     */
+    double[][] forward(double[][] input);
+    
+    /**
+     * Backward propagation through this layer
+     */
+    double[][] backward(double[][] gradOutput, double learningRate, double l2Regularization);
+    
+    /**
+     * Backward propagation without L2 regularization
+     */
+    default double[][] backward(double[][] gradOutput, double learningRate) {
+        return backward(gradOutput, learningRate, 0.0);
     }
-
-    //GETTERS
-    public double[][] getWeights() { return weights; }
-    public double[][] getBias() { return bias; }
-    public Activation getActivation() { return activation; }
-    public int getInputSize() { return inputSize; }
-    public int getOutputSize() { return outputSize; }
-
-    //SETTERS
-    public void setWeights(double[][] weights) { this.weights = weights; }
-    public void setBias(double[][] bias) { this.bias = bias; }
+    
+    /**
+     * Set training mode (affects dropout, batch norm, etc.)
+     */
+    void setTraining(boolean training);
+    
+    /**
+     * Get the number of parameters in this layer
+     */
+    int getParameterCount();
+    
+    /**
+     * Get the output size of this layer
+     */
+    int getOutputSize();
+    
+    /**
+     * Get the input size of this layer
+     */
+    int getInputSize();
 }

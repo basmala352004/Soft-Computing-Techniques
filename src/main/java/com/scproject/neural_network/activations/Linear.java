@@ -1,18 +1,29 @@
 package com.scproject.neural_network.activations;
 
-public class Linear implements Activation {
-    @Override
-    public double forward(double z) {
-        return z;
-    }
+import com.scproject.neural_network.core.MatrixUtils;
 
-    @Override
-    public double backward(double z) {
-        return 1.0;
+/**
+ * Linear activation function
+ */
+public class Linear extends Activation {
+    
+    public Linear() {
+        super("linear", false);
     }
-
+    
     @Override
-    public String getName() {
-        return "Linear";
+    public double[][] forward(double[][] x) {
+        return MatrixUtils.copy(x);
+    }
+    
+    @Override
+    public double[][] derivative(double[][] x) {
+        double[][] result = new double[x.length][x[0].length];
+        for (int i = 0; i < x.length; i++) {
+            for (int j = 0; j < x[0].length; j++) {
+                result[i][j] = 1.0;
+            }
+        }
+        return result;
     }
 }

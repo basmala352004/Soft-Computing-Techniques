@@ -1,10 +1,24 @@
 package com.scproject.neural_network.loss;
 
-public interface LossFunction {
-
-    double forward(double[][] predictions, double[][] targets);
-
-    double[][] backward(double[][] predictions, double[][] targets);
-
-    String getName();
+/**
+ * Base class for loss functions
+ */
+public abstract class LossFunction {
+    protected double[][] cachedPredictions;
+    protected double[][] cachedTargets;
+    
+    public abstract double forward(double[][] predictions, double[][] targets);
+    public abstract double[][] backward();
+    
+    // Factory method
+    public static LossFunction create(String name) {
+        switch (name.toLowerCase()) {
+            case "mse":
+                return new MSELoss();
+            case "cross_entropy":
+                return new CrossEntropyLoss();
+            default:
+                throw new IllegalArgumentException("Unknown loss function: " + name);
+        }
+    }
 }

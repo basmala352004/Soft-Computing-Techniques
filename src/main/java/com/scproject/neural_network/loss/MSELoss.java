@@ -1,39 +1,51 @@
 package com.scproject.neural_network.loss;
 
-public class MSELoss implements LossFunction {
+import com.scproject.neural_network.core.MatrixUtils;
+
+/**
+ * Mean Squared Error loss function
+ */
+public class MSELoss extends LossFunction {
+    
     @Override
     public double forward(double[][] predictions, double[][] targets) {
-        int m = predictions.length;
-        int n = predictions[0].length;
+        if (predictions.length != targets.length || 
+            predictions[0].length != targets[0].length) {
+            throw new IllegalArgumentException("Predictions and targets must have same shape");
+        }
+        
+        this.cachedPredictions = MatrixUtils.copy(predictions);
+        this.cachedTargets = MatrixUtils.copy(targets);
+        
         double sum = 0.0;
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        int count = 0;
+        
+        for (int i = 0; i < predictions.length; i++) {
+            for (int j = 0; j < predictions[0].length; j++) {
                 double diff = predictions[i][j] - targets[i][j];
                 sum += diff * diff;
+                count++;
             }
         }
-
-        return sum / (m * n);
+        
+        return sum / count;
     }
-
+    
     @Override
-    public double[][] backward(double[][] predictions, double[][] targets) {
-        int m = predictions.length;
-        int n = predictions[0].length;
-        double[][] gradient = new double[m][n];
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                gradient[i][j] = 2.0 * (predictions[i][j] - targets[i][j]) / (m * n);
+    public double[][] backward() {
+        if (cachedPredictions == null || cachedTargets == null) {
+            throw new IllegalStateException("Forward pass must be called before backward pass");
+        }
+        
+        int n = cachedPredictions.length;
+        double[][] gradient = new double[cachedPredictions.length][cachedPredictions[0].length];
+        
+        for (int i = 0; i < cachedPredictions.length; i++) {
+            for (int j = 0; j < cachedPredictions[0].length; j++) {
+                gradient[i][j] = (2.0 / n) * (cachedPredictions[i][j] - cachedTargets[i][j]);
             }
         }
-
+        
         return gradient;
-    }
-
-    @Override
-    public String getName() {
-        return "MSE";
     }
 }
